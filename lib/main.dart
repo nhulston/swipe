@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:swipe/Style/app_colors.dart';
 import 'package:swipe/Style/radiant_gradient_mask.dart';
-import 'package:tcard/tcard.dart';
+import 'cards.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,43 +26,50 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-List<Color> colors = [
-  Colors.blue,
-  Colors.yellow,
-  Colors.red,
-  Colors.orange,
-  Colors.pink,
-  Colors.amber,
-  Colors.cyan,
-  Colors.purple,
-  Colors.brown,
-  Colors.teal,
-];
-
-List<Widget> cards = List.generate(
-  colors.length,
-      (int index) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: colors[index],
-      ),
-      child: Text(
-        '${index + 1}',
-        style: TextStyle(fontSize: 100.0, color: Colors.white),
-      ),
-    );
-  },
-);
-
 class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        backgroundColor: Colors.white,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Image(
+              height: screenHeight / 30,
+              image: AssetImage(_selectedIndex == 0 ? 'assets/s.png' : 'assets/s_gray.png'),
+            ),
+            title: const SizedBox.shrink(),
+          ),
+          BottomNavigationBarItem(
+            icon: _selectedIndex == 0 ? Icon(
+              Icons.grid_view,
+              size: screenHeight / 30,
+            ) : RadiantGradientMask(
+                child: Icon(
+                  Icons.grid_view,
+                  size: screenHeight / 30,
+                )
+            ),
+            title: const SizedBox.shrink(),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -95,17 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      body: TCard(
-        cards: cards,
-        onForward: (int x, SwipInfo info) {
-          log('$x');
-          log('${info.cardIndex}');
-        },
-        onBack: (int x, SwipInfo info) {
-          log('$x');
-          log('${info.cardIndex}');
-        },
-      )
+      body: Center(
+        child: _selectedIndex == 0 ? const Cards() : Column(),
+      ),
     );
   }
 }
