@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swipe/Services/stocks.dart';
 import 'package:swipe/Style/app_colors.dart';
 import 'package:swipe/Style/radiant_gradient_mask.dart';
+import 'Style/portfolio.dart';
 import 'cards.dart';
 
 void main() {
@@ -103,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Center(
-        child: _selectedIndex == 0 ? const Cards() : Column(),
+        child: _selectedIndex == 0 ? const Cards() : const Portfolio(),
       ),
     );
   }

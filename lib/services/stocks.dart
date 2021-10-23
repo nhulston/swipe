@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:swipe/Models/stock.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:finance_quote/finance_quote.dart';
 
