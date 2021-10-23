@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:swipe/Services/stocks.dart';
-import 'package:swipe/Style/radiant_gradient_mask.dart';
-import 'Style/portfolio.dart';
+import 'package:swipe/services/stocks.dart';
+import 'package:swipe/style/radiant_gradient_mask.dart';
+import 'style/portfolio.dart';
 import 'cards.dart';
+import 'package:swipe/models/stock.dart';
 import 'my_app_bar.dart';
 import 'my_nav_bar.dart';
 
@@ -30,10 +31,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  getStocks() async {
+    await StockServices.fetchStock("msft");
+  }
+
   @override
   Widget build(BuildContext context) {
-    StockServices().fetchStockData();
-
+    getStocks();
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: MyNavBar(notifyParent: () {setState(() {});}),
