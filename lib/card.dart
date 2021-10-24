@@ -24,11 +24,41 @@ class _AssetCardState extends State<AssetCard> {
 
   getDataPoints() {
     for (int i = 0; i < widget.asset.priceData.close!.length; i++) {
-      dataPoints.add(DataPoint(value: widget.asset.priceData.close![i].toDouble(), xAxis: widget.asset.priceData.timestamp![i]));
+      dataPoints.add(DataPoint(
+          value: widget.asset.priceData.close![i].toDouble(),
+          xAxis: widget.asset.priceData.timestamp![i]));
     }
     setState(() {
       dataPoints = dataPoints;
     });
+  }
+
+  Widget showPrices(String type, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          type,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey,
+          ),
+        ),
+        Row(
+          children: [
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        )
+      ],
+    );
   }
 
   @override
@@ -86,10 +116,11 @@ class _AssetCardState extends State<AssetCard> {
                         ),
                       ),
                       Text(
-                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
-                          '+${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
-                        : '${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
-                        ,
+                        (widget.asset.data.closePrice -
+                                    widget.asset.data.openPrice) >
+                                0
+                            ? '+${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
+                            : '${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
@@ -101,9 +132,22 @@ class _AssetCardState extends State<AssetCard> {
                   Row(
                     children: [
                       Text(
-                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
-                          "+" + (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %"
-                          : (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %",
+                        (widget.asset.data.closePrice -
+                                    widget.asset.data.openPrice) >
+                                0
+                            ? "+" +
+                                (((widget.asset.data.closePrice -
+                                                widget.asset.data.openPrice) /
+                                            widget.asset.data.openPrice) *
+                                        100)
+                                    .toStringAsFixed(2) +
+                                " %"
+                            : (((widget.asset.data.closePrice -
+                                                widget.asset.data.openPrice) /
+                                            widget.asset.data.openPrice) *
+                                        100)
+                                    .toStringAsFixed(2) +
+                                " %",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -111,10 +155,11 @@ class _AssetCardState extends State<AssetCard> {
                         ),
                       ),
                       Icon(
-                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
-                            Icons.arrow_upward
-                          :
-                            Icons.arrow_downward,
+                        (widget.asset.data.closePrice -
+                                    widget.asset.data.openPrice) >
+                                0
+                            ? Icons.arrow_upward
+                            : Icons.arrow_downward,
                         color: Colors.white,
                       ),
                     ],
