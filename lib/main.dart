@@ -43,6 +43,7 @@ class MyHomePageState extends State<MyHomePage> {
   static MyHomePageState? stateRef;
 
   static getStocks() async {
+    print("GETTING STOCKS");
     int offset = stocks.length;
     for (int i = 0; i < 10; i++) {
       Stock s = await getStock();

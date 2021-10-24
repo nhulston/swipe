@@ -10,8 +10,16 @@ import 'package:yahoofin/yahoofin.dart';
 
 class StockServices {
   static Future<String> getRandomSymbol() async {
-    List<dynamic> symbols = (await parseJsonFromAssets('assets/stocks.json'))["symbols"];
-    String symbol = symbols[Random().nextInt(symbols.length)];
+    bool shouldPickStock = Random().nextInt(99) >= 25;
+    String symbol;
+    if (shouldPickStock) {
+      List<dynamic> symbols = (await parseJsonFromAssets('assets/stocks.json'))["symbols"];
+      symbol = symbols[Random().nextInt(symbols.length)];
+    } else {
+      List<dynamic> symbols = (await parseJsonFromAssets('assets/cryptos.json'))["symbols"];
+      symbol = symbols[Random().nextInt(symbols.length)];
+    }
+
     return symbol;
   }
   static Future<Stock> fetchStock(String symbol) async {

@@ -65,17 +65,21 @@ class _CandlesticksState extends State<CandlesticksGraph> {
 
   /// candleWidth controls the width of the single candles.
   ///  range: [2...10]
-  double candleWidth = 3;
+  double candleWidth = 0.0;
 
   bool showIntervals = false;
 
   @override
   Widget build(BuildContext context) {
+    candleWidth = 220 / widget.candles.length;
     if (widget.candles.isEmpty) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
+    Color rangeButtonBackground = widget.candles[0].close - widget.candles[widget.candles.length - 1].close > 0 ?
+        ColorPalette.darkGreen : ColorPalette.darkRed;
+    Color rangeButtonForeground = Colors.white;
     return Column(
       children: [
         Container(
@@ -124,11 +128,11 @@ class _CandlesticksState extends State<CandlesticksGraph> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: CustomButton(
                                     width: 50,
-                                    color: ColorPalette.lightGold,
+                                    color: rangeButtonBackground,
                                     child: Text(
                                       e,
                                       style: TextStyle(
-                                        color: ColorPalette.gold,
+                                        color: rangeButtonForeground,
                                       ),
                                     ),
                                     onPressed: () {

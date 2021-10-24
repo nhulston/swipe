@@ -166,12 +166,12 @@ class Chart extends StatelessWidget {
                                 AnimatedPositioned(
                                   duration: Duration(microseconds: 300),
                                   right: 0,
-                                  top: maxHeight * 3 / 4 -
+                                  top: maxHeight -
                                       30 -
                                       ((candles[index >= 0 ? index : 0].close -
                                           (low as double)) /
                                           (high - low)) *
-                                          (maxHeight * 3 / 4 - 40),
+                                          (maxHeight - 40),
                                   child: Row(
                                     children: [
                                       Container(

@@ -28,6 +28,7 @@ class AssetCard extends StatefulWidget {
 class AssetCardState extends State<AssetCard> {
 
   static AssetCardState? stateReference;
+  String interval = '1D';
 
   getDataPoints() async {
     print('getting data points: ${widget.asset.symbol}');
@@ -106,6 +107,7 @@ class AssetCardState extends State<AssetCard> {
     } else {
       print('${widget.asset.symbol}, ${ChartCandlesData.candleData[widget.asset.symbol]![0].close}');
     }
+    Color directionColor = (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ? Color.fromARGB(255, 2, 192, 119) : Color.fromARGB(255, 207, 48, 74);
     // print('building card: ${widget.asset.symbol}, ${ChartCandlesData.candleData[widget.asset.symbol]![ChartCandlesData.candleData[widget.asset.symbol]!.length - 1].close}, ${widget.asset.data.closePrice}');
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -160,15 +162,16 @@ class AssetCardState extends State<AssetCard> {
                             color: Colors.white,
                           ),
                         ),
+                        SizedBox(width: 10,),
                         Text(
                           (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
                           '+${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
                               : (widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)
                           ,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                            color: directionColor,
                           ),
                         ),
                       ],
@@ -179,10 +182,10 @@ class AssetCardState extends State<AssetCard> {
                           (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
                           "+" + (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %"
                               : (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                            color: directionColor,
                           ),
                         ),
                         Icon(
@@ -190,7 +193,7 @@ class AssetCardState extends State<AssetCard> {
                           Icons.arrow_upward
                               :
                           Icons.arrow_downward,
-                          color: Colors.white,
+                          color: directionColor,
                         ),
                       ],
                     )
@@ -203,39 +206,41 @@ class AssetCardState extends State<AssetCard> {
                       child: CandlesticksGraph(
                         candles: ChartCandlesData.candleData[widget.asset.symbol]!,
                         onIntervalChange: (String val) async {
-                          StockRange interval;
+                          interval = val;
+                          StockRange range;
                           switch (val) {
                             case '1D':
-                              interval = StockRange.oneDay;
+                              range = StockRange.oneDay;
                               break;
                             case '5D':
-                              interval = StockRange.fiveDay;
+                              range = StockRange.fiveDay;
                               break;
                             case '1M':
-                              interval = StockRange.oneMonth;
+                              range = StockRange.oneMonth;
                               break;
                             case '3M':
-                              interval = StockRange.threeMonth;
+                              range = StockRange.threeMonth;
                               break;
                             case '1Y':
-                              interval = StockRange.oneYear;
+                              range = StockRange.oneYear;
                               break;
                             case '5Y':
-                              interval = StockRange.fiveYear;
+                              range = StockRange.fiveYear;
                               break;
                             default:
-                              interval = StockRange.maxRange;
+                              range = StockRange.maxRange;
                           }
 
-                          ChartQuotes? quotes = await StockServices.getChartData(widget.asset.symbol, interval);
+                          ChartQuotes? quotes = await StockServices.getChartData(widget.asset.symbol, range);
                           if (quotes != null) {
                             setState(() {
                               print(quotes.close);
                               widget.asset.priceData = quotes;
+                              getDataPoints();
                             });
                           }
                         },
-                        interval: '1D',
+                        interval: interval,
                         intervals: const [
                           '1D',
                           '5D',

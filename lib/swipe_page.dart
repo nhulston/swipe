@@ -44,6 +44,7 @@ class SwipePageState extends State<SwipePage> {
         if (info.direction == SwipeDirection.left) return;
         MyHomePageState.currentlyViewedIndex = info.cardIndex;
         if (MyHomePageState.currentlyViewedIndex! + 3 > MyHomePageState.stocks.length) {
+          print("get more stocks");
           MyHomePageState.getStocks();
         }
         setState(() {
