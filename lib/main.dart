@@ -37,7 +37,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<AssetCard> stocks = [];
-  Function()? watchlistCallback;
+  Function? watchlistCallback;
   getStocks() async {
     for (int i = 0; i < 10; i++) {
       Stock s = await getStock();
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    WatchlistPage watchlistPage = WatchlistPage(Portfolio.items, watchlistCallback);
+    WatchlistPage watchlistPage = WatchlistPage(Portfolio.items);
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: MyNavBar(notifyParent: () {
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AddWatchlistCard(watchlistCallback!);
+              return AddWatchlistCard();
             },
           );
           await Portfolio.addToPortfolio(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height, "AAPL");

@@ -81,6 +81,7 @@ class Portfolio {
       items.add(SizedBox(height: screenHeight / 100));
       return true;
     } catch(error) {
+      print(error);
       return false;
     }
   }

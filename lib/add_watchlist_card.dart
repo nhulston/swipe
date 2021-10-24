@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:swipe/models/portfolio.dart';
 import 'package:swipe/style/app_colors.dart';
+import 'package:swipe/watchlist_page.dart';
 
 class AddWatchlistCard extends StatefulWidget {
-  final Function() watchlistCallback;
-
-  const AddWatchlistCard(this.watchlistCallback, {Key? key}) : super(key: key);
+  AddWatchlistCard({Key? key}) : super(key: key);
 
   @override
   _AddWatchlistCardState createState() => _AddWatchlistCardState();
@@ -72,8 +71,10 @@ class _AddWatchlistCardState extends State<AddWatchlistCard> {
                       loading = true;
                     });
                     bool result = await Portfolio.addToPortfolio(screenWidth, screenHeight, controller.text);
+                    print('adding to watchlist: $result');
                     if (result) {
-                      widget.watchlistCallback;
+                      print('adding to watchlist yes');
+                      WatchlistPageState.stateReference!.updateState();
                       Navigator.of(context).pop();
                     } else {
                       setState(() {
