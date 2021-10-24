@@ -104,7 +104,7 @@ class Chart extends StatelessWidget {
         double tileHeight = 0;
         int scaleIndex = 0;
         final maxHeight = constraints.maxHeight - 20;
-        double chartHeight = maxHeight * 3 / 4 - 40;
+        double chartHeight = maxHeight  - 40;
         for (int i = 0; i < scales.length; i++) {
           double newHigh = ((high ~/ scales[i] + 1) * scales[i]).toDouble();
           double newLow = ((low ~/ scales[i]) * scales[i]).toDouble();
