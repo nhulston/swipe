@@ -32,7 +32,7 @@ class _SwipePageState extends State<SwipePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return TCard(
+    TCard build = TCard(
       size: Size(screenWidth, screenHeight),
       lockYAxis: true,
       cards: widget.cards,
@@ -45,5 +45,8 @@ class _SwipePageState extends State<SwipePage> {
         log('${info.cardIndex}');
       },
     );
+    print("rebuilding: ${build.cards}");
+    return build;
   }
+
 }
