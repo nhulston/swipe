@@ -21,7 +21,7 @@ List<Color> colors = [
 List<Widget> cards = List.generate(
   colors.length,
   (int index) {
-    return MyCard();
+    return AssetCard();
   },
 );
 
