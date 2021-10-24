@@ -2,21 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tcard/tcard.dart';
+import 'package:swipe/elements/tinder_swipe/tinder_swipe.dart';
 import 'package:swipe/card.dart';
 
-List<Color> colors = [
-  Colors.blue,
-  Colors.yellow,
-  Colors.red,
-  Colors.orange,
-  Colors.pink,
-  Colors.amber,
-  Colors.cyan,
-  Colors.purple,
-  Colors.brown,
-  Colors.teal,
-];
+import 'elements/tinder_swipe/swipe_info.dart';
 
 class SwipePage extends StatefulWidget {
   final List<AssetCard> cards;
@@ -32,15 +21,14 @@ class _SwipePageState extends State<SwipePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    TCard build = TCard(
+    TinderSwipe build = TinderSwipe(
       size: Size(screenWidth, screenHeight),
-      lockYAxis: true,
       cards: widget.cards,
-      onForward: (int x, SwipInfo info) {
+      onForward: (int x, SwipeInfo info) {
         log('$x');
         log('${info.cardIndex}');
       },
-      onBack: (int x, SwipInfo info) {
+      onBack: (int x, SwipeInfo info) {
         log('$x');
         log('${info.cardIndex}');
       },

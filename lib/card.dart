@@ -16,10 +16,6 @@ class AssetCard extends StatefulWidget {
 }
 
 class _AssetCardState extends State<AssetCard> {
-  Color color = Colors.white;
-  Color fcolor = Colors.grey;
-  bool isActive = false;
-  int activeIndex = 0;
   List<Candle> candles = [];
 
   getDataPoints() async {
@@ -49,12 +45,13 @@ class _AssetCardState extends State<AssetCard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.black,
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: SingleChildScrollView(
           child: Padding(
@@ -163,32 +160,32 @@ class _AssetCardState extends State<AssetCard> {
                 ),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Open",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: const [
-                            Text(
-                              "149.64",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Open",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey,
                             ),
-                          ],
-                        )
-                      ],
-                    )
+                          ),
+                          Row(
+                            children: const [
+                              Text(
+                                "149.64",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -464,8 +461,7 @@ class _AssetCardState extends State<AssetCard> {
             ),
           ),
         ),
-
-      )
+      ),
     );
   }
 }
