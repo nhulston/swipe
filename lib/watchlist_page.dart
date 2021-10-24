@@ -67,7 +67,18 @@ class WatchlistPageState extends State<WatchlistPage> {
             ),
           ),
           SizedBox(height: screenHeight / 50),
-          Expanded(
+          widget.items.isEmpty ? Center(
+            child: SizedBox(
+              width: screenWidth / 1.5,
+              child: Text(
+                "Your watchlist is currently empty. Swipe some assets on the other page or add some by ticker!",
+                style: TextStyle(
+                  color: AppColors.blackText,
+                  fontSize: screenWidth / 25,
+                ),
+              ),
+            ),
+          ) : Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: widget.items,
