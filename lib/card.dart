@@ -11,9 +11,6 @@ import 'package:swipe/services/stocks.dart';
 import 'package:swipe/style/app_colors.dart';
 import 'package:yahoofin/yahoofin.dart';
 import 'models/stock_data.dart';
-import 'package:swipe/services/api_service.dart';
-import 'package:swipe/services/article_model.dart';
-import 'package:swipe/services/news_article_view.dart';
 import 'package:swipe/services/article_list_view.dart';
 import 'elements/candlesticks.dart';
 import 'models/asset.dart';
@@ -33,8 +30,7 @@ class AssetCardState extends State<AssetCard> {
   static AssetCardState? stateReference;
   String interval = '1D';
   String? endPointUrl;
-  String? context;
-  final vm = Provider.of<NewsArticleListViewModel>(context);
+  //final vm = Provider.of<NewsArticleListViewModel>(context);
 
   getDataPoints() async {
     print('getting data points: ${widget.asset.symbol}');
@@ -115,7 +111,6 @@ class AssetCardState extends State<AssetCard> {
   void initState() {
     super.initState();
     getDataPoints();
-    context = "";
     endPointUrl = "https://newsapi.org/v2/everything?q=" +
         widget.asset.name +
         "&from=2021-10-24&sortBy=popularity&apiKey=61c4a69dd3c34d9aaf4737ff5c309a7f";
