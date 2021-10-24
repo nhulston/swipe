@@ -31,7 +31,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   getStocks() async {
     String symbol = await StockServices.getRandomSymbol();
     print(symbol);
@@ -47,10 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
     getStocks();
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: MyNavBar(notifyParent: () {setState(() {});}),
+      bottomNavigationBar: MyNavBar(notifyParent: () {
+        setState(() {});
+      }),
       appBar: const MyAppBar(),
       body: Center(
-        child: MyNavBarState.bottomNavIndex == 0 ? const Cards() : const Portfolio(),
+        child: MyNavBarState.bottomNavIndex == 0
+            ? const Cards()
+            : const Portfolio(),
       ),
     );
   }
