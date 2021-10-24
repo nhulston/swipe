@@ -1,12 +1,19 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:swipe/models/asset_data.dart';
 import 'package:swipe/models/stock.dart';
 import 'package:swipe/models/stock_data.dart';
+import 'package:swipe/utils/randomizer.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:yahoofin/yahoofin.dart';
 
 class StockServices {
+  static Future<String> getRandomSymbol() async {
+    List<dynamic> symbols = (await parseJsonFromAssets('assets/stocks.json'))["symbols"];
+    String symbol = symbols[Random().nextInt(symbols.length)];
+    return symbol;
+  }
   static Future<Stock> fetchStock(String symbol) async {
     ChartQuotes? quotes = await getChartData(symbol, StockRange.oneDay);
     AssetData assetData = await fetchAssetData(symbol);
@@ -69,6 +76,7 @@ class StockServices {
     final yfin = YahooFin();
     StockHistory hist = yfin.initStockHistory(ticker: symbol);
     StockChart quotes = await yfin.getChartQuotes(stockHistory: hist, interval: interval, period: chartRange);
+    print(quotes.chartQuotes);
     return quotes.chartQuotes;
 
   }

@@ -33,7 +33,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   getStocks() async {
-    await StockServices.fetchStock("msft");
+    String symbol = await StockServices.getRandomSymbol();
+    print(symbol);
+    try {
+      await StockServices.fetchStock(symbol);
+    } catch (e) {
+      getStocks();
+    }
   }
 
   @override
