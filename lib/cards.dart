@@ -18,15 +18,9 @@ List<Color> colors = [
   Colors.teal,
 ];
 
-List<Widget> cards = List.generate(
-  colors.length,
-  (int index) {
-    return AssetCard();
-  },
-);
-
 class Cards extends StatefulWidget {
-  const Cards({Key? key}) : super(key: key);
+  final List<AssetCard> cards;
+  Cards({Key? key, required this.cards}) : super(key: key);
 
   @override
   _CardsState createState() => _CardsState();
@@ -41,7 +35,7 @@ class _CardsState extends State<Cards> {
     return TCard(
       size: Size(screenWidth, screenHeight),
       lockYAxis: true,
-      cards: cards,
+      cards: widget.cards,
       onForward: (int x, SwipInfo info) {
         log('$x');
         log('${info.cardIndex}');

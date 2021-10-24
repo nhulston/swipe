@@ -5,8 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:swipe/graph_card.dart';
 
+import 'models/asset.dart';
+
 class AssetCard extends StatefulWidget {
-  const AssetCard({Key? key}) : super(key: key);
+  final Asset asset;
+  AssetCard({Key? key, required this.asset}) : super(key: key);
 
   @override
   _AssetCardState createState() => _AssetCardState();
@@ -33,7 +36,7 @@ class _AssetCardState extends State<AssetCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Apple Inc.",
+                widget.asset.name,
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w700,
@@ -45,7 +48,7 @@ class _AssetCardState extends State<AssetCard> {
               ),
               // ignore: prefer_const_constructors
               Text(
-                "APPL",
+                widget.asset.symbol,
                 // ignore: prefer_const_constructors
                 style: TextStyle(
                   fontSize: 15,
@@ -59,7 +62,7 @@ class _AssetCardState extends State<AssetCard> {
                   Row(
                     children: [
                       Text(
-                        "148.69",
+                        widget.asset.data.closePrice.toStringAsPrecision(2),
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w600,
@@ -67,7 +70,7 @@ class _AssetCardState extends State<AssetCard> {
                         ),
                       ),
                       Text(
-                        "-0.79 ",
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsPrecision(2),
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
@@ -79,7 +82,7 @@ class _AssetCardState extends State<AssetCard> {
                   Row(
                     children: [
                       Text(
-                        "-0.53%",
+                  ((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice - 1).toStringAsPrecision(2) + " %",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
