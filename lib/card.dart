@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:swipe/graph_card.dart';
+import 'package:swipe/chart_candles_data.dart';
+import 'package:swipe/main.dart';
 import 'package:swipe/services/stocks.dart';
 import 'package:swipe/style/app_colors.dart';
 import 'package:yahoofin/yahoofin.dart';
@@ -16,34 +18,43 @@ import 'models/asset.dart';
 class AssetCard extends StatefulWidget {
   final Asset asset;
   AssetCard({Key? key, required this.asset}) : super(key: key);
+  int? index;
+  AssetCard({Key? key, required this.asset, this.index}) : super(key: key);
 
   @override
-  _AssetCardState createState() => _AssetCardState();
+  AssetCardState createState() => AssetCardState();
 }
 
-class _AssetCardState extends State<AssetCard> {
-  Color textColor = Colors.white;
-  bool isActive = false;
-  int activeIndex = 0;
-  List<Candle> candles = [];
+class AssetCardState extends State<AssetCard> {
+
+  static AssetCardState? stateReference;
 
   getDataPoints() async {
+    print('getting data points: ${widget.asset.symbol}');
+    Candle? lastCandle;
+    ChartCandlesData.candleData[widget.asset.symbol] = [];
     for (int i = widget.asset.priceData.close!.length - 1; i >= 0 ; i--) {
       double open = widget.asset.priceData.open![i] == null ? 0.0 : widget.asset.priceData.open![i].toDouble();
       double high = widget.asset.priceData.high![i] == null ? 0.0 : widget.asset.priceData.high![i].toDouble();
       double low = widget.asset.priceData.low![i] == null ? 0.0 : widget.asset.priceData.low![i].toDouble();
       double close = widget.asset.priceData.close![i] == null ? 0.0 : widget.asset.priceData.close![i].toDouble();
       DateTime timestamp;
-      if (widget.asset.priceData.timestamp![i] != null) {
-        timestamp = DateTime.fromMillisecondsSinceEpoch(widget.asset.priceData.timestamp![i].toInt() * 1000);
-        if (close != null && close > 0) {
-          candles.add(Candle(date: timestamp, open: open, high: high, low: low, close: close, volume: open));
+      timestamp = DateTime.fromMillisecondsSinceEpoch(widget.asset.priceData.timestamp![i].toInt() * 1000);
+      // print('$open, $high, $low, $close, $timestamp');
+      if (close > 0) {
+        lastCandle = Candle(date: timestamp, open: open, high: high, low: low, close: close, volume: open);
+      } else {
+        if (lastCandle != null) {
+          lastCandle = Candle(date: timestamp, open: lastCandle.open, high: lastCandle.open, low: lastCandle.open, close: lastCandle.close, volume: 0);
         }
       }
+      if (lastCandle != null) {
+        ChartCandlesData.candleData[widget.asset.symbol]!.add(lastCandle);
+      }
+
 
     }
     setState(() {
-      candles = candles;
     });
   }
 
@@ -77,19 +88,32 @@ class _AssetCardState extends State<AssetCard> {
 
   @override
   void initState() {
-    getDataPoints();
     super.initState();
+    getDataPoints();
   }
 
   @override
   Widget build(BuildContext context) {
+    print('building card: ${widget.asset.symbol}, ${widget.index}');
+    if (widget.index != null && widget.index != -1 && widget.index! < MyHomePageState.currentlyViewedIndex!) {
+      this.dispose();
+      return Text('');
+    }
+    if (ChartCandlesData.candleData[widget.asset.symbol] == null) {
+      getDataPoints();
+      return Text('');
+    } else {
+      print('${widget.asset.symbol}, ${ChartCandlesData.candleData[widget.asset.symbol]![0].close}');
+    }
+    // print('building card: ${widget.asset.symbol}, ${ChartCandlesData.candleData[widget.asset.symbol]![ChartCandlesData.candleData[widget.asset.symbol]!.length - 1].close}, ${widget.asset.data.closePrice}');
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        decoration: BoxDecoration(
+          color: const Color(0xff0f0f0f),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: SingleChildScrollView(
           child: Padding(
@@ -176,16 +200,49 @@ class _AssetCardState extends State<AssetCard> {
                       height: MediaQuery.of(context).size.height / 2.5,
                       width: MediaQuery.of(context).size.width,
                       child: CandlesticksGraph(
-                        candles: candles,
+                        candles: ChartCandlesData.candleData[widget.asset.symbol]!,
                         onIntervalChange: (String val) async {
-                          // TODO: use val to get interval
-                          ChartQuotes? quotes = await StockServices.getChartData(widget.asset.symbol, StockRange.fiveDay);
+                          StockRange interval;
+                          switch (val) {
+                            case '1D':
+                              interval = StockRange.oneDay;
+                              break;
+                            case '5D':
+                              interval = StockRange.fiveDay;
+                              break;
+                            case '1M':
+                              interval = StockRange.oneMonth;
+                              break;
+                            case '3M':
+                              interval = StockRange.threeMonth;
+                              break;
+                            case '1Y':
+                              interval = StockRange.oneYear;
+                              break;
+                            case '5Y':
+                              interval = StockRange.fiveYear;
+                              break;
+                            default:
+                              interval = StockRange.maxRange;
+                          }
+
+                          ChartQuotes? quotes = await StockServices.getChartData(widget.asset.symbol, interval);
                           if (quotes != null) {
                             setState(() {
+                              print(quotes.close);
                               widget.asset.priceData = quotes;
                             });
                           }
-                        }, interval: '1m',
+                        },
+                        interval: '1D',
+                        intervals: const [
+                          '1D',
+                          '5D',
+                          '1M',
+                          '3M',
+                          '1Y',
+                          '5Y'
+                        ],
                       )
                   ),
                 ),
@@ -258,8 +315,7 @@ class _AssetCardState extends State<AssetCard> {
             ),
           ),
         ),
-
-      )
+      ),
     );
   }
 }

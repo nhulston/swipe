@@ -3,20 +3,27 @@ import 'package:swipe/style/app_colors.dart';
 
 class WatchlistPage extends StatefulWidget {
   final List<Widget> items;
-  Function()? state;
-  WatchlistPage(this.items, this.state, {Key? key}) : super(key: key);
+  WatchlistPage(this.items, {Key? key}) : super(key: key);
 
   @override
-  WatchlistPageState createState() => WatchlistPageState();
+  WatchlistPageState createState() {
+    return WatchlistPageState();
+  }
 }
 
 class WatchlistPageState extends State<WatchlistPage> {
 
+  static WatchlistPageState? stateReference;
+
+  updateState() {
+    this.setState(() {
+      print('Setting state');
+    });
+  }
+
   @override
   void initState() {
-    widget.state = () {
-      setState(() {});
-    };
+    stateReference = this;
     super.initState();
   }
 
@@ -47,7 +54,7 @@ class WatchlistPageState extends State<WatchlistPage> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                      "Search 50 cryptos",
+                      "Search watchlist",
                       style: TextStyle(
                         color: AppColors.lightGray,
                         fontSize: screenWidth / 25,
@@ -59,7 +66,7 @@ class WatchlistPageState extends State<WatchlistPage> {
           ),
           SizedBox(height: screenHeight / 30),
           Text(
-            'Your Crypto Watchlist',
+            'Your Watchlist',
             style: TextStyle(
               color: AppColors.red,
               fontSize: screenWidth / 25,

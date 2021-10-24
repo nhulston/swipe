@@ -71,6 +71,7 @@ class _CandlesticksState extends State<CandlesticksGraph> {
 
   @override
   Widget build(BuildContext context) {
+    print('building chart: ${widget.candles[0].close}}');
     if (widget.candles.length == 0)
       return Container(
         child: Center(

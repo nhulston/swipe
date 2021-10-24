@@ -1,51 +1,70 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tcard/tcard.dart';
+import 'package:swipe/elements/tinder_swipe/tinder_swipe.dart';
 import 'package:swipe/card.dart';
+import 'package:swipe/main.dart';
 
-List<Color> colors = [
-  Colors.blue,
-  Colors.yellow,
-  Colors.red,
-  Colors.orange,
-  Colors.pink,
-  Colors.amber,
-  Colors.cyan,
-  Colors.purple,
-  Colors.brown,
-  Colors.teal,
-];
+import 'chart_candles_data.dart';
+import 'elements/tinder_swipe/swipe_info.dart';
 
 class SwipePage extends StatefulWidget {
-  final List<AssetCard> cards;
-  const SwipePage({Key? key, required this.cards}) : super(key: key);
+  List<AssetCard> cards;
+  SwipePage({Key? key, required this.cards}) : super(key: key);
 
   @override
-  _SwipePageState createState() => _SwipePageState();
+  SwipePageState createState() => SwipePageState();
 }
 
-class _SwipePageState extends State<SwipePage> {
+class SwipePageState extends State<SwipePage> {
+
+  static SwipePageState? stateRef;
+
+  updateState() {
+    setState(() {
+      print("setting state of swipe page");
+    });
+  }
+
+  @override
+  void initState() {
+    stateRef = this;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    TCard build = TCard(
+    TinderSwipe build = TinderSwipe(
       size: Size(screenWidth, screenHeight),
-      lockYAxis: true,
       cards: widget.cards,
-      onForward: (int x, SwipInfo info) {
+      onForward: (int x, SwipeInfo info) {
+        MyHomePageState.currentlyViewedIndex = info.cardIndex;
+        if (MyHomePageState.currentlyViewedIndex! + 3 > MyHomePageState.stocks.length) {
+          MyHomePageState.getStocks();
+        }
+        setState(() {
+          // widget.cards.removeAt(0);
+        });
         log('$x');
         log('${info.cardIndex}');
       },
-      onBack: (int x, SwipInfo info) {
+      onBack: (int x, SwipeInfo info) {
+        MyHomePageState.currentlyViewedIndex = info.cardIndex;
+        ChartCandlesData.candleData.remove([widget.cards[info.cardIndex].asset.symbol]!);
+        if (MyHomePageState.currentlyViewedIndex! + 3 > MyHomePageState.stocks.length) {
+          MyHomePageState.getStocks();
+        }
+        setState(() {
+          // widget.cards.removeAt(0);
+        });
         log('$x');
         log('${info.cardIndex}');
       },
     );
-    print("rebuilding: ${build.cards}");
+    // print("rebuilding: ${build.cards}");
     return build;
   }
 
