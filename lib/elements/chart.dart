@@ -258,7 +258,7 @@ class Chart extends StatelessWidget {
                               color: ColorPalette.digalogColor,
                               child: Center(
                                 child: Text(
-                                  hoverY < maxHeight * 0.75
+                                  hoverY < maxHeight
                                       ? (high -
                                       (hoverY - 20) /
                                           (maxHeight * 0.75 - 40) *
