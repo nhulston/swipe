@@ -60,7 +60,8 @@ class AssetCardState extends State<AssetCard> {
   Widget build(BuildContext context) {
     print('building card: ${widget.asset.symbol}, ${widget.index}');
     if (widget.index != null && widget.index != -1 && widget.index! < MyHomePageState.currentlyViewedIndex!) {
-      this.dispose();
+      MyHomePageState.stocks.removeAt(widget.index!);
+      //this.dispose();
       return Text('');
     }
     if (ChartCandlesData.candleData[widget.asset.symbol] == null) {
