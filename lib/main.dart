@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:swipe/add_watchlist_card.dart';
 import 'package:swipe/card.dart';
+import 'package:swipe/models/portfolio.dart';
 import 'package:swipe/services/stocks.dart';
 import 'package:swipe/style/app_colors.dart';
 import 'package:swipe/style/radiant_gradient_mask.dart';
@@ -35,8 +37,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<AssetCard> stocks = [];
-
-
+  Function()? watchlistCallback;
   getStocks() async {
     for (int i = 0; i < 10; i++) {
       Stock s = await getStock();
@@ -56,7 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       return getStocks();
     }
-
 }
 
   @override
@@ -67,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    WatchlistPage watchlistPage = WatchlistPage(Portfolio.items, watchlistCallback);
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: MyNavBar(notifyParent: () {
@@ -78,12 +79,19 @@ class _MyHomePageState extends State<MyHomePage> {
             ? stocks.isEmpty ?
               const Text("Loading...")
               : SwipePage(cards: stocks,)
-            : const WatchlistPage(), //const Portfolio(),
+            : watchlistPage,
       ),
       floatingActionButton: MyNavBarState.bottomNavIndex == 0 ? null : FloatingActionButton(
         backgroundColor: AppColors.red,
-        onPressed: () {
-
+        onPressed: () async {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AddWatchlistCard(watchlistCallback!);
+            },
+          );
+          await Portfolio.addToPortfolio(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height, "AAPL");
+          setState(() {});
         },
         child: const Icon(
           Icons.add,
