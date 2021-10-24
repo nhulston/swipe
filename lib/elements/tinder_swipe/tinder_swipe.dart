@@ -383,7 +383,6 @@ class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) {
-    print('building tinder cards: $widget.cards');
     return SizedBox.fromSize(
       size: widget.size,
       child: LayoutBuilder(
