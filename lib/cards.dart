@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tcard/tcard.dart';
+import 'package:swipe/card.dart';
 
 List<Color> colors = [
   Colors.blue,
@@ -19,17 +20,8 @@ List<Color> colors = [
 
 List<Widget> cards = List.generate(
   colors.length,
-      (int index) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: colors[index],
-      ),
-      child: Text(
-        '${index + 1}',
-        style: TextStyle(fontSize: 100.0, color: Colors.white),
-      ),
-    );
+  (int index) {
+    return MyCard();
   },
 );
 
