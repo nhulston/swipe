@@ -2,13 +2,13 @@ import 'dart:math';
 import 'package:candlesticks/candlesticks.dart';
 import 'package:candlesticks/src/theme/color_palette.dart';
 import 'package:candlesticks/src/widgets/candle_stick_widget.dart';
-import 'package:candlesticks/src/widgets/price_column.dart';
 import 'package:candlesticks/src/widgets/time_row.dart';
 import 'package:candlesticks/src/widgets/volume_widget.dart';
 import 'package:candlesticks/src/widgets/dash_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:candlesticks/src/constant/scales.dart';
+import 'package:swipe/elements/price_column.dart';
 
 /// This widget manages gestures
 /// Calculates the highest and lowest price of visible candles.
@@ -81,7 +81,7 @@ class Chart extends StatelessWidget {
     else if (log > 3)
       return "${price ~/ 1000}K";
     else
-      return "${price.toStringAsFixed(0)}";
+      return "${price.toStringAsFixed(2)}";
   }
 
   String numberFormat(int value) {
@@ -165,7 +165,7 @@ class Chart extends StatelessWidget {
                                   high: high as double,
                                   scaleIndex: scaleIndex,
                                   width: constraints.maxWidth,
-                                  height: maxHeight * 3 / 4,
+                                  height: maxHeight,
                                 ),
                                 AnimatedPositioned(
                                   duration: Duration(microseconds: 300),
@@ -193,9 +193,7 @@ class Chart extends StatelessWidget {
                                         child: Center(
                                           child: Text(
                                             candles[index >= 0 ? index : 0]
-                                                .close
-                                                .round()
-                                                .toString(),
+                                                .close.toStringAsFixed(2),
                                             style: TextStyle(
                                               color: ColorPalette.grayColor,
                                               fontSize: 12,
@@ -241,59 +239,6 @@ class Chart extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.symmetric(
-                                        vertical: BorderSide(
-                                          color: ColorPalette.grayColor,
-                                          width: 1,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      // child: VolumeWidget(
-                                      //   candles: candles,
-                                      //   barWidth: candleWidth,
-                                      //   index: index,
-                                      //   high: getRoof(volumeHigh),
-                                      // ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 20,
-                                        child: Center(
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "-${priceToString(getRoof(volumeHigh))}",
-                                                style: TextStyle(
-                                                  color: ColorPalette.grayColor,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  width: 50,
-                                ),
-                              ],
-                            ),
-                          ),
                           SizedBox(
                             height: 20,
                           ),
@@ -318,7 +263,7 @@ class Chart extends StatelessWidget {
                                       (hoverY - 20) /
                                           (maxHeight * 0.75 - 40) *
                                           (high - low))
-                                      .toStringAsFixed(0)
+                                      .toStringAsFixed(2)
                                       : priceToString(getRoof(volumeHigh) *
                                       (1 -
                                           (hoverY - maxHeight * 0.75 - 10) /
