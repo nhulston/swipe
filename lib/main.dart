@@ -37,15 +37,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  List<AssetCard> stocks = [];
+  static List<AssetCard> stocks = [];
   Function? watchlistCallback;
   static int? currentlyViewedIndex;
-  getStocks() async {
+  static MyHomePageState? stateRef;
+
+  static getStocks() async {
+    int offset = stocks.length;
     for (int i = 0; i < 10; i++) {
       Stock s = await getStock();
-      AssetCard card = AssetCard(asset: s, index: i,);
+      AssetCard card = AssetCard(asset: s, index: i + offset,);
       stocks.add(card);
-      setState(() {
+      stateRef!.setState(() {
       });
       if (SwipePageState.stateRef != null) {
         SwipePageState.stateRef!.updateState();
@@ -53,7 +56,7 @@ class MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<Stock> getStock() async {
+  static Future<Stock> getStock() async {
     String symbol = await StockServices.getRandomSymbol();
     print(symbol);
     try {
@@ -68,6 +71,7 @@ class MyHomePageState extends State<MyHomePage> {
     getStocks();
     currentlyViewedIndex = 0;
     super.initState();
+    stateRef = this;
   }
 
   @override

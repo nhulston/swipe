@@ -42,6 +42,9 @@ class SwipePageState extends State<SwipePage> {
       cards: widget.cards,
       onForward: (int x, SwipeInfo info) {
         MyHomePageState.currentlyViewedIndex = info.cardIndex;
+        if (MyHomePageState.currentlyViewedIndex! + 3 > MyHomePageState.stocks.length) {
+          MyHomePageState.getStocks();
+        }
         setState(() {
           // widget.cards.removeAt(0);
         });
@@ -51,6 +54,9 @@ class SwipePageState extends State<SwipePage> {
       onBack: (int x, SwipeInfo info) {
         MyHomePageState.currentlyViewedIndex = info.cardIndex;
         ChartCandlesData.candleData.remove([widget.cards[info.cardIndex].asset.symbol]!);
+        if (MyHomePageState.currentlyViewedIndex! + 3 > MyHomePageState.stocks.length) {
+          MyHomePageState.getStocks();
+        }
         setState(() {
           // widget.cards.removeAt(0);
         });
