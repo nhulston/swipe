@@ -76,6 +76,9 @@ class _CandlesticksState extends State<CandlesticksGraph> {
         child: CircularProgressIndicator(),
       );
     }
+    Color rangeButtonBackground = widget.candles[0].close - widget.candles[widget.candles.length - 1].close > 0 ?
+        ColorPalette.darkGreen : ColorPalette.darkRed;
+    Color rangeButtonForeground = Colors.white;
     return Column(
       children: [
         Container(
@@ -124,11 +127,11 @@ class _CandlesticksState extends State<CandlesticksGraph> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: CustomButton(
                                     width: 50,
-                                    color: ColorPalette.lightGold,
+                                    color: rangeButtonBackground,
                                     child: Text(
                                       e,
                                       style: TextStyle(
-                                        color: ColorPalette.gold,
+                                        color: rangeButtonForeground,
                                       ),
                                     ),
                                     onPressed: () {
