@@ -6,14 +6,14 @@ import 'package:bezier_chart/bezier_chart.dart';
 import 'package:swipe/graph_card.dart';
 import 'package:swipe/app_colors.dart';
 
-class MyCard extends StatefulWidget {
-  const MyCard({Key? key}) : super(key: key);
+class AssetCard extends StatefulWidget {
+  const AssetCard({Key? key}) : super(key: key);
 
   @override
-  _MyCardState createState() => _MyCardState();
+  _AssetCardState createState() => _AssetCardState();
 }
 
-class _MyCardState extends State<MyCard> {
+class _AssetCardState extends State<AssetCard> {
   Color color = Colors.white;
   Color fcolor = Colors.grey;
   bool isActive = false;
