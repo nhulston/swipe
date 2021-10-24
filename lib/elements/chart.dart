@@ -140,7 +140,7 @@ class Chart extends StatelessWidget {
                   candles.length - 2
                 );
                 return Container(
-                  color: Colors.black,
+                  color: Color(0xff0f0f0f),
                   child: Stack(
                     children: [
                       TimeRow(

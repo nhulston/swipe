@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:swipe/elements/tinder_swipe/tinder_swipe.dart';
 import 'package:swipe/card.dart';
 import 'package:swipe/main.dart';
-
 import 'chart_candles_data.dart';
 import 'elements/tinder_swipe/swipe_info.dart';
+import 'models/portfolio.dart';
 
 class SwipePage extends StatefulWidget {
   List<AssetCard> cards;
@@ -41,16 +41,22 @@ class SwipePageState extends State<SwipePage> {
       size: Size(screenWidth, screenHeight),
       cards: widget.cards,
       onForward: (int x, SwipeInfo info) {
+        if (info.direction == SwipeDirection.left) return;
         MyHomePageState.currentlyViewedIndex = info.cardIndex;
         setState(() {
           // widget.cards.removeAt(0);
         });
-        log('$x');
-        log('${info.cardIndex}');
+        String ticker = widget.cards[x].asset.symbol.toUpperCase();
+        int index = ticker.indexOf("-USD");
+        if (index == -1) {
+          Portfolio.addToPortfolio(context, ticker);
+        } else {
+          Portfolio.addToPortfolio(context, ticker.substring(0, index));
+        }
       },
       onBack: (int x, SwipeInfo info) {
         MyHomePageState.currentlyViewedIndex = info.cardIndex;
-        ChartCandlesData.candleData.remove([widget.cards[info.cardIndex].asset.symbol]!);
+        ChartCandlesData.candleData.remove([widget.cards[info.cardIndex].asset.symbol]);
         setState(() {
           // widget.cards.removeAt(0);
         });
