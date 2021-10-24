@@ -65,12 +65,13 @@ class _CandlesticksState extends State<CandlesticksGraph> {
 
   /// candleWidth controls the width of the single candles.
   ///  range: [2...10]
-  double candleWidth = 3;
+  double candleWidth = 0.0;
 
   bool showIntervals = false;
 
   @override
   Widget build(BuildContext context) {
+    candleWidth = 220 / widget.candles.length;
     if (widget.candles.isEmpty) {
       return const Center(
         child: CircularProgressIndicator(),
