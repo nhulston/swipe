@@ -2,13 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:swipe/style/app_colors.dart';
 
 class WatchlistPage extends StatefulWidget {
-  const WatchlistPage({Key? key}) : super(key: key);
+  final List<Widget> items;
+  Function()? state;
+  WatchlistPage(this.items, this.state, {Key? key}) : super(key: key);
 
   @override
-  _WatchlistPageState createState() => _WatchlistPageState();
+  WatchlistPageState createState() => WatchlistPageState();
 }
 
-class _WatchlistPageState extends State<WatchlistPage> {
+class WatchlistPageState extends State<WatchlistPage> {
+
+  @override
+  void initState() {
+    widget.state = () {
+      setState(() {});
+    };
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -55,64 +66,14 @@ class _WatchlistPageState extends State<WatchlistPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: screenHeight / 50),
-                // Example item
-                GestureDetector(
-                  onTap: () {
-
-                  },
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: AppColors.almostWhite,
-                      borderRadius: BorderRadius.all(Radius.circular(100)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 5),
-                          const Icon(
-                            Icons.remove_red_eye,
-                            color: AppColors.blackText,
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: screenWidth / 2.35,
-                            child: Text(
-                              "Bitcoin" + " " + "(BTC)",
-                              style: TextStyle(
-                                fontSize: screenHeight / 45,
-                                color: AppColors.blackText,
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                          Text(
-                            "\$60,000",
-                            style: TextStyle(
-                              fontSize: screenHeight / 60,
-                              color: AppColors.blackText,
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            "+0.98%",
-                            style: TextStyle(
-                              fontSize: screenHeight / 60,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+          SizedBox(height: screenHeight / 50),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: widget.items,
+              ),
             ),
-          )
+          ),
         ],
       ),
     );
