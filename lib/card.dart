@@ -20,6 +20,22 @@ class _AssetCardState extends State<AssetCard> {
   Color fcolor = Colors.grey;
   bool isActive = false;
   int activeIndex = 0;
+  List<DataPoint> dataPoints = [];
+
+  getDataPoints() {
+    for (int i = 0; i < widget.asset.priceData.close!.length; i++) {
+      dataPoints.add(DataPoint(value: widget.asset.priceData.close![i].toDouble(), xAxis: widget.asset.priceData.timestamp![i]));
+    }
+    setState(() {
+      dataPoints = dataPoints;
+    });
+  }
+
+  @override
+  void initState() {
+    getDataPoints();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +78,7 @@ class _AssetCardState extends State<AssetCard> {
                   Row(
                     children: [
                       Text(
-                        widget.asset.data.closePrice.toStringAsPrecision(2),
+                        '\$${widget.asset.data.closePrice.toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w600,
@@ -70,7 +86,10 @@ class _AssetCardState extends State<AssetCard> {
                         ),
                       ),
                       Text(
-                        (widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsPrecision(2),
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
+                          '+${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
+                        : '${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
+                        ,
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
@@ -82,7 +101,9 @@ class _AssetCardState extends State<AssetCard> {
                   Row(
                     children: [
                       Text(
-                  ((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice - 1).toStringAsPrecision(2) + " %",
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
+                          "+" + (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %"
+                          : (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -90,7 +111,10 @@ class _AssetCardState extends State<AssetCard> {
                         ),
                       ),
                       Icon(
-                        Icons.arrow_downward,
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
+                            Icons.arrow_upward
+                          :
+                            Icons.arrow_downward,
                         color: Colors.white,
                       ),
                     ],
@@ -285,7 +309,7 @@ class _AssetCardState extends State<AssetCard> {
                         Row(
                           children: [
                             Text(
-                              "150.18",
+                              widget.asset.data.highPrice.toStringAsFixed(2),
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
@@ -315,7 +339,7 @@ class _AssetCardState extends State<AssetCard> {
                         Row(
                           children: [
                             Text(
-                              "148.64",
+                              widget.asset.data.lowPrice.toStringAsFixed(2),
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
@@ -343,7 +367,7 @@ class _AssetCardState extends State<AssetCard> {
                         Row(
                           children: [
                             Text(
-                              "157.26",
+                              widget.asset.data.yearHighPrice.toStringAsFixed(2),
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
@@ -373,7 +397,7 @@ class _AssetCardState extends State<AssetCard> {
                         Row(
                           children: [
                             Text(
-                              "107.32",
+                              widget.asset.data.yearLowPrice.toStringAsFixed(2),
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
@@ -401,7 +425,7 @@ class _AssetCardState extends State<AssetCard> {
                         Row(
                           children: [
                             Text(
-                              "107.32",
+                              widget.asset.data.volume.toString(),
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,

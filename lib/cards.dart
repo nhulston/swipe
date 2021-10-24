@@ -19,7 +19,7 @@ List<Color> colors = [
 ];
 
 class Cards extends StatefulWidget {
-  final List<AssetCard> cards;
+  List<AssetCard> cards;
   Cards({Key? key, required this.cards}) : super(key: key);
 
   @override
@@ -32,7 +32,7 @@ class _CardsState extends State<Cards> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    return TCard(
+    TCard build = TCard(
       size: Size(screenWidth, screenHeight),
       lockYAxis: true,
       cards: widget.cards,
@@ -45,5 +45,8 @@ class _CardsState extends State<Cards> {
         log('${info.cardIndex}');
       },
     );
+    print("rebuilding: ${build.cards}");
+    return build;
   }
+
 }
