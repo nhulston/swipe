@@ -119,6 +119,7 @@ class Portfolio {
       String price = formatPrice(stock.data.closePrice);
       double change = (((stock.data.closePrice - stock.priceData.close![0]) / stock.priceData.close![0]) * 10000).round().toDouble() / 100;
 
+      print('adding $ticker to portfolio');
       portfolio.add(ticker);
       items.add(buildItem(context, name, newTicker, price, change));
       items.add(SizedBox(height: screenHeight / 100));

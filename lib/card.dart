@@ -9,13 +9,11 @@ import 'package:swipe/chart_candles_data.dart';
 import 'package:swipe/main.dart';
 import 'package:swipe/services/stocks.dart';
 import 'package:swipe/style/app_colors.dart';
-import 'package:swipe/utils/article_display.dart';
 import 'package:yahoofin/yahoofin.dart';
 import 'models/stock_data.dart';
 import 'package:swipe/services/article_list_view.dart';
 import 'elements/candlesticks.dart';
 import 'models/asset.dart';
-import 'package:provider/provider.dart';
 
 class AssetCard extends StatefulWidget {
   final Asset asset;
