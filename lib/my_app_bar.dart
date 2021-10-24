@@ -44,7 +44,6 @@ class _MyAppBarState extends State<MyAppBar> {
               ),
             ),
           ),
-          SizedBox(width: screenWidth / 10),
           const Spacer(),
 
           // Logo
@@ -56,20 +55,7 @@ class _MyAppBarState extends State<MyAppBar> {
             ),
           ),
           const Spacer(),
-
-          // Switch mode
-          SizedBox(
-            width: screenWidth / 5,
-            child: TextButton(
-              child: const Text(
-                'Switch Mode',
-                textAlign: TextAlign.center,
-              ),
-              onPressed: () {
-                _onAssetTypeTapped();
-              },
-            ),
-          ),
+          SizedBox(width: screenWidth / 10),
         ],
       ),
     );

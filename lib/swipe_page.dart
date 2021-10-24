@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe/elements/tinder_swipe/tinder_swipe.dart';
 import 'package:swipe/card.dart';
-
 import 'elements/tinder_swipe/swipe_info.dart';
 
 class SwipePage extends StatefulWidget {
