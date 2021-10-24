@@ -37,6 +37,7 @@ dependencies:
   tcard: ^1.3.5
   yahoofin: ^0.0.8
   bezier_chart: ^1.0.16
+  candlesticks: ^1.1.1
 
 dev_dependencies:
   flutter_test:
