@@ -4,54 +4,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:swipe/graph_card.dart';
-import 'package:swipe/style/app_colors.dart';
+
+import 'models/asset.dart';
 
 class AssetCard extends StatefulWidget {
-  const AssetCard({Key? key}) : super(key: key);
+  final Asset asset;
+  AssetCard({Key? key, required this.asset}) : super(key: key);
 
   @override
   _AssetCardState createState() => _AssetCardState();
 }
 
 class _AssetCardState extends State<AssetCard> {
-  Color color = Colors.grey;
-  Color fcolor = Colors.black;
-  Color textColor = Colors.black;
+  Color color = Colors.white;
+  Color fcolor = Colors.grey;
   bool isActive = false;
   int activeIndex = 0;
+  List<DataPoint> dataPoints = [];
 
-  Widget showPrices(String type, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          type,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: Colors.grey,
-          ),
-        ),
-        Row(
-          children: [
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        )
-      ],
-    );
+  getDataPoints() {
+    for (int i = 0; i < widget.asset.priceData.close!.length; i++) {
+      dataPoints.add(DataPoint(value: widget.asset.priceData.close![i].toDouble(), xAxis: widget.asset.priceData.timestamp![i]));
+    }
+    setState(() {
+      dataPoints = dataPoints;
+    });
+  }
+
+  @override
+  void initState() {
+    getDataPoints();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.veryLightGrey,
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -63,11 +52,11 @@ class _AssetCardState extends State<AssetCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Apple Inc.",
+                widget.asset.name,
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w700,
-                  color: textColor,
+                  color: Colors.white,
                 ),
               ), //Company name
               SizedBox(
@@ -75,12 +64,12 @@ class _AssetCardState extends State<AssetCard> {
               ),
               // ignore: prefer_const_constructors
               Text(
-                "APPL",
+                widget.asset.symbol,
                 // ignore: prefer_const_constructors
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
-                  color: textColor,
+                  color: Colors.grey,
                 ),
               ), //Trading tag
               Row(
@@ -89,19 +78,22 @@ class _AssetCardState extends State<AssetCard> {
                   Row(
                     children: [
                       Text(
-                        "148.69",
+                        '\$${widget.asset.data.closePrice.toStringAsFixed(2)}',
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w600,
-                          color: textColor,
+                          color: Colors.white,
                         ),
                       ),
                       Text(
-                        "-0.79 ",
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
+                          '+${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
+                        : '${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
+                        ,
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
-                          color: Colors.red,
+                          color: Colors.orange,
                         ),
                       ),
                     ],
@@ -109,16 +101,21 @@ class _AssetCardState extends State<AssetCard> {
                   Row(
                     children: [
                       Text(
-                        "-0.53%",
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
+                          "+" + (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %"
+                          : (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
-                          color: Colors.red,
+                          color: Colors.orange,
                         ),
                       ),
                       Icon(
-                        Icons.arrow_downward,
-                        color: Colors.red,
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
+                            Icons.arrow_upward
+                          :
+                            Icons.arrow_downward,
+                        color: Colors.white,
                       ),
                     ],
                   )
@@ -135,9 +132,9 @@ class _AssetCardState extends State<AssetCard> {
                     series: const [
                       BezierLine(
                         label: "june",
-                        lineColor: Colors.black,
-                        dataPointStrokeColor: Colors.black,
-                        dataPointFillColor: Colors.black,
+                        lineColor: Colors.orange,
+                        dataPointStrokeColor: Colors.orange,
+                        dataPointFillColor: Colors.orange,
                         lineStrokeWidth: 3,
                         data: const [
                           DataPoint<double>(value: 100, xAxis: 1),
@@ -165,7 +162,12 @@ class _AssetCardState extends State<AssetCard> {
                         color: Colors.black,
                       ),
                       backgroundGradient: LinearGradient(
-                        colors: [Colors.grey, Colors.grey],
+                        colors: [
+                          Colors.black,
+                          Colors.black,
+                          Colors.black,
+                          Colors.black
+                        ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                       ),
@@ -174,7 +176,6 @@ class _AssetCardState extends State<AssetCard> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
               Row(
                 children: [
                   Container(

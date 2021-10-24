@@ -76,7 +76,6 @@ class StockServices {
     final yfin = YahooFin();
     StockHistory hist = yfin.initStockHistory(ticker: symbol);
     StockChart quotes = await yfin.getChartQuotes(stockHistory: hist, interval: interval, period: chartRange);
-    print(quotes.chartQuotes);
     return quotes.chartQuotes;
 
   }

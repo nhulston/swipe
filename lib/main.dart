@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:swipe/card.dart';
 import 'package:swipe/services/stocks.dart';
+import 'package:swipe/style/app_colors.dart';
 import 'package:swipe/style/radiant_gradient_mask.dart';
-import 'style/portfolio.dart';
-import 'cards.dart';
+import 'package:swipe/watchlist_page.dart';
+//import 'style/portfolio.dart';
+import 'swipe_page.dart';
 import 'package:swipe/models/stock.dart';
 import 'my_app_bar.dart';
 import 'my_nav_bar.dart';
@@ -31,19 +34,39 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<AssetCard> stocks = [];
+
+
   getStocks() async {
+    for (int i = 0; i < 10; i++) {
+      Stock s = await getStock();
+      AssetCard card = AssetCard(asset: s);
+      stocks.add(card);
+      setState(() {
+        stocks = stocks;
+      });
+    }
+  }
+
+  Future<Stock> getStock() async {
     String symbol = await StockServices.getRandomSymbol();
     print(symbol);
     try {
-      await StockServices.fetchStock(symbol);
+      return await StockServices.fetchStock(symbol);
     } catch (e) {
-      getStocks();
+      return getStocks();
     }
+
+}
+
+  @override
+  void initState() {
+    super.initState();
+    getStocks();
   }
 
   @override
   Widget build(BuildContext context) {
-    getStocks();
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: MyNavBar(notifyParent: () {
@@ -52,8 +75,19 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: const MyAppBar(),
       body: Center(
         child: MyNavBarState.bottomNavIndex == 0
-            ? const Cards()
-            : const Portfolio(),
+            ? stocks.isEmpty ?
+              const Text("Loading...")
+              : SwipePage(cards: stocks,)
+            : const WatchlistPage(), //const Portfolio(),
+      ),
+      floatingActionButton: MyNavBarState.bottomNavIndex == 0 ? null : FloatingActionButton(
+        backgroundColor: AppColors.red,
+        onPressed: () {
+
+        },
+        child: const Icon(
+          Icons.add,
+        ),
       ),
     );
   }
