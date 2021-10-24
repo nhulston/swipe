@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:swipe/graph_card.dart';
-import 'package:swipe/app_colors.dart';
+import 'package:swipe/style/app_colors.dart';
 
 class AssetCard extends StatefulWidget {
   const AssetCard({Key? key}) : super(key: key);
@@ -14,15 +14,44 @@ class AssetCard extends StatefulWidget {
 }
 
 class _AssetCardState extends State<AssetCard> {
-  Color color = Colors.white;
-  Color fcolor = Colors.grey;
+  Color color = Colors.grey;
+  Color fcolor = Colors.black;
+  Color textColor = Colors.black;
   bool isActive = false;
   int activeIndex = 0;
+
+  Widget showPrices(String type, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          type,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey,
+          ),
+        ),
+        Row(
+          children: [
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: AppColors.veryLightGrey,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -38,7 +67,7 @@ class _AssetCardState extends State<AssetCard> {
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: textColor,
                 ),
               ), //Company name
               SizedBox(
@@ -51,7 +80,7 @@ class _AssetCardState extends State<AssetCard> {
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
-                  color: Colors.grey,
+                  color: textColor,
                 ),
               ), //Trading tag
               Row(
@@ -64,7 +93,7 @@ class _AssetCardState extends State<AssetCard> {
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          color: textColor,
                         ),
                       ),
                       Text(
@@ -72,7 +101,7 @@ class _AssetCardState extends State<AssetCard> {
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
-                          color: Colors.orange,
+                          color: Colors.red,
                         ),
                       ),
                     ],
@@ -84,12 +113,12 @@ class _AssetCardState extends State<AssetCard> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
-                          color: Colors.orange,
+                          color: Colors.red,
                         ),
                       ),
                       Icon(
                         Icons.arrow_downward,
-                        color: Colors.white,
+                        color: Colors.red,
                       ),
                     ],
                   )
@@ -106,9 +135,9 @@ class _AssetCardState extends State<AssetCard> {
                     series: const [
                       BezierLine(
                         label: "june",
-                        lineColor: Colors.orange,
-                        dataPointStrokeColor: Colors.orange,
-                        dataPointFillColor: Colors.orange,
+                        lineColor: Colors.black,
+                        dataPointStrokeColor: Colors.black,
+                        dataPointFillColor: Colors.black,
                         lineStrokeWidth: 3,
                         data: const [
                           DataPoint<double>(value: 100, xAxis: 1),
@@ -136,12 +165,7 @@ class _AssetCardState extends State<AssetCard> {
                         color: Colors.black,
                       ),
                       backgroundGradient: LinearGradient(
-                        colors: [
-                          Colors.black,
-                          Colors.black,
-                          Colors.black,
-                          Colors.black
-                        ],
+                        colors: [Colors.grey, Colors.grey],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                       ),
@@ -150,6 +174,7 @@ class _AssetCardState extends State<AssetCard> {
                   ),
                 ),
               ),
+              SizedBox(height: 10),
               Row(
                 children: [
                   Container(
@@ -238,296 +263,49 @@ class _AssetCardState extends State<AssetCard> {
               SizedBox(
                 height: 20,
               ),
+              // Open & Close
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Open",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "149.64",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )), //Open
+                Expanded(flex: 1, child: showPrices("Open", "149.64")), //Open
                 SizedBox(width: 10),
-                Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "High",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "150.18",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )), //High
-              ]), //Open & Close
+                Expanded(flex: 1, child: showPrices("High", "149.64")), //High
+              ]),
               SizedBox(height: 10),
+              // Low & 52 Wk High
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Low",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "148.64",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )), //Low
+                  flex: 1,
+                  child: showPrices("Low", "148.64"),
+                ),
                 SizedBox(width: 10),
                 Expanded(
                     flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "52 Wk High",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "157.26",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )), //52 Wk High
-              ]), //Low & 52 Wk High
+                    child: showPrices("52 Wk High", "149.64")), //52 Wk High
+              ]),
               SizedBox(height: 10),
+              // 52k low & Volume
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Expanded(
                     flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "52 Wk Low",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "107.32",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )), //52 Wk Low
+                    child: showPrices("52 Wk Low", "149.64")), //52 Wk Low
                 SizedBox(width: 10),
                 Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Volume",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "107.32",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )), //Volume
-              ]), //52k low & Volume
+                    flex: 1, child: showPrices("Volume", "149.64")), //Volume
+              ]),
               SizedBox(height: 10),
+              // Avg Vol & Mkt Cap
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Avg Vol",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "69.46M",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )),
+                Expanded(flex: 1, child: showPrices("Avg Vol", "149.64")),
                 SizedBox(width: 10),
-                Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Mkt Cap",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "2.46T",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )),
+                Expanded(flex: 1, child: showPrices("Mkt Cap", "149.64")),
               ]), //Avg Vol & Mkt Cap
               SizedBox(height: 10),
+              // P/E ratio & Div/Yield
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "P/E Ratio",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "29.12",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )),
+                Expanded(flex: 1, child: showPrices("P/E ratio", "149.64")),
                 SizedBox(width: 10),
-                Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Div/Yield",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "0.57",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    )),
+                Expanded(flex: 1, child: showPrices("Div/Yield", "149.64")),
               ]),
-              SizedBox(height: 20), //P/E ratio & Div/Yield
+              SizedBox(height: 20),
               Text(
                 "News",
                 style: TextStyle(
