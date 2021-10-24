@@ -29,7 +29,7 @@ class _AssetCardState extends State<AssetCard> {
   ];
 
   getDataPoints() async {
-    for (int i = 0; i < widget.asset.priceData.close!.length; i++) {
+    for (int i = widget.asset.priceData.close!.length - 1; i >= 0 ; i--) {
       double open = widget.asset.priceData.open![i] == null ? 0.0 : widget.asset.priceData.open![i].toDouble();
       double high = widget.asset.priceData.high![i] == null ? 0.0 : widget.asset.priceData.high![i].toDouble();
       double low = widget.asset.priceData.low![i] == null ? 0.0 : widget.asset.priceData.low![i].toDouble();
@@ -64,7 +64,7 @@ class _AssetCardState extends State<AssetCard> {
           gradient: LinearGradient(
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
-            colors: [Color(0xFF14342B), Color(0xFF60935D)]
+            colors: [Color(0xFF000000), Color(0xFF000000)]
           )
         ),
         child:SingleChildScrollView(
@@ -165,88 +165,7 @@ class _AssetCardState extends State<AssetCard> {
                       )
                   ),
                 ),
-                Row(
-                  children: [
-                    Container(
-                      height: 40,
-                      width: MediaQuery.of(context).size.width / 5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18.0),
-                        color: Colors.red,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "5 days",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GraphCardWidget(
-                      title: "5 D",
-                      activeColor: color,
-                      fontColor: fcolor,
-                      isActive: isActive,
-                      activeIndex: activeIndex,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GraphCardWidget(
-                      title: "1 W",
-                      activeColor: color,
-                      fontColor: fcolor,
-                      isActive: isActive,
-                      activeIndex: activeIndex,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GraphCardWidget(
-                      title: "1 M",
-                      activeColor: color,
-                      fontColor: fcolor,
-                      isActive: isActive,
-                      activeIndex: activeIndex,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GraphCardWidget(
-                      title: "3 M",
-                      activeColor: color,
-                      fontColor: fcolor,
-                      isActive: isActive,
-                      activeIndex: activeIndex,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GraphCardWidget(
-                      title: "1 Y",
-                      activeColor: color,
-                      fontColor: fcolor,
-                      isActive: isActive,
-                      activeIndex: activeIndex,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GraphCardWidget(
-                      title: "5 Y",
-                      activeColor: color,
-                      fontColor: fcolor,
-                      isActive: isActive,
-                      activeIndex: activeIndex,
-                    ),
-                  ],
-                ),
+
                 SizedBox(
                   height: 20,
                 ),

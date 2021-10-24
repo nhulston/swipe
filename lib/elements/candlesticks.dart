@@ -65,7 +65,7 @@ class _CandlesticksState extends State<CandlesticksGraph> {
 
   /// candleWidth controls the width of the single candles.
   ///  range: [2...10]
-  double candleWidth = 6;
+  double candleWidth = 3;
 
   bool showIntervals = false;
 
