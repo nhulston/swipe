@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:one_context/one_context.dart';
+import 'package:swipe/card.dart';
 import 'package:swipe/models/stock.dart';
 import 'package:swipe/services/stocks.dart';
 import 'dart:math' as math;
@@ -7,14 +9,54 @@ import 'package:intl/intl.dart';
 
 class Portfolio {
   static List<String> portfolio = [];
-  static List<Widget> items = [
+  static List<Widget> items = [];
 
-  ];
-
-  static Widget buildItem(double screenWidth, double screenHeight, String name, String ticker, String price, double priceChange) {
+  static Widget buildItem(BuildContext context, String name, String ticker, String price, double priceChange) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return GestureDetector(
-      onTap: () {
-
+      onTap: () async {
+        try {
+          Stock s = await StockServices.fetchStock(ticker);
+          AssetCard card = AssetCard(asset: s);
+          OneContext().push(
+            MaterialPageRoute(
+              builder: (context) {
+                return Scaffold(
+                  appBar: AppBar(
+                    backgroundColor: const Color(0xff0f0f0f),
+                    elevation: 0,
+                  ),
+                  backgroundColor: const Color(0xff0f0f0f),
+                  body: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: card,
+                  ),
+                );
+              },
+            ),
+          );
+        } catch (exception) {
+          Stock s = await StockServices.fetchStock(ticker + "-USD");
+          AssetCard card = AssetCard(asset: s);
+          OneContext().push(
+            MaterialPageRoute(
+              builder: (context) {
+                return Scaffold(
+                  appBar: AppBar(
+                    backgroundColor: const Color(0xff0f0f0f),
+                    elevation: 0,
+                  ),
+                  backgroundColor: const Color(0xff0f0f0f),
+                  body: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: card,
+                  ),
+                );
+              },
+            ),
+          );
+        }
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -32,7 +74,7 @@ class Portfolio {
               ),
               const SizedBox(width: 10),
               SizedBox(
-                width: screenWidth / 2.5,
+                width: screenWidth / 2.6,
                 child: Text(
                   name + " " + "($ticker)",
                   style: TextStyle(
@@ -65,7 +107,8 @@ class Portfolio {
   }
 
   /// Returns true if successful, false otherwise
-  static Future<bool> addToPortfolio(double screenWidth, double screenHeight, String ticker) async {
+  static Future<bool> addToPortfolio(BuildContext context, String ticker) async {
+    double screenHeight = MediaQuery.of(context).size.height;
     ticker = ticker.toUpperCase();
     if (portfolio.contains(ticker)) return true; // Returns true, we just want to return false if invalid ticker
 
@@ -77,7 +120,7 @@ class Portfolio {
       double change = (((stock.data.closePrice - stock.priceData.close![0]) / stock.priceData.close![0]) * 10000).round().toDouble() / 100;
 
       portfolio.add(ticker);
-      items.add(buildItem(screenWidth, screenHeight, name, newTicker, price, change));
+      items.add(buildItem(context, name, newTicker, price, change));
       items.add(SizedBox(height: screenHeight / 100));
       return true;
     } catch(error) {

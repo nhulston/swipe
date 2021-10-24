@@ -5,7 +5,6 @@ import 'package:swipe/chart_candles_data.dart';
 import 'package:swipe/main.dart';
 import 'package:swipe/services/stocks.dart';
 import 'package:yahoofin/yahoofin.dart';
-
 import 'elements/candlesticks.dart';
 import 'models/asset.dart';
 
@@ -77,7 +76,7 @@ class AssetCardState extends State<AssetCard> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: const Color(0xff0f0f0f),
           borderRadius: BorderRadius.circular(20),
         ),
         child: SingleChildScrollView(

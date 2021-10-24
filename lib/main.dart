@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:one_context/one_context.dart';
 import 'package:swipe/add_watchlist_card.dart';
 import 'package:swipe/card.dart';
 import 'package:swipe/models/portfolio.dart';
 import 'package:swipe/services/stocks.dart';
 import 'package:swipe/style/app_colors.dart';
-import 'package:swipe/style/radiant_gradient_mask.dart';
 import 'package:swipe/watchlist_page.dart';
-//import 'style/portfolio.dart';
 import 'swipe_page.dart';
 import 'package:swipe/models/stock.dart';
 import 'my_app_bar.dart';
@@ -21,9 +20,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      builder: OneContext().builder,
+      navigatorKey: OneContext().navigator.key,
       title: '\$wipe',
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
@@ -64,9 +65,9 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    super.initState();
     getStocks();
     currentlyViewedIndex = 0;
+    super.initState();
   }
 
   @override
@@ -80,10 +81,10 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: const MyAppBar(),
       body: Center(
         child: MyNavBarState.bottomNavIndex == 0
-            ? stocks.isEmpty ?
-              const Text("Loading...")
-              : SwipePage(cards: stocks,)
-            : watchlistPage,
+          ? (stocks.isEmpty ?
+            const Text("Loading...")
+            : SwipePage(cards: stocks))
+          : watchlistPage,
       ),
       floatingActionButton: MyNavBarState.bottomNavIndex == 0 ? null : FloatingActionButton(
         backgroundColor: AppColors.red,
@@ -94,7 +95,6 @@ class MyHomePageState extends State<MyHomePage> {
               return AddWatchlistCard();
             },
           );
-          await Portfolio.addToPortfolio(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height, "AAPL");
           setState(() {});
         },
         child: const Icon(

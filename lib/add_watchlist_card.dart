@@ -70,9 +70,11 @@ class _AddWatchlistCardState extends State<AddWatchlistCard> {
                     setState(() {
                       loading = true;
                     });
-                    bool result = await Portfolio.addToPortfolio(screenWidth, screenHeight, controller.text);
+                    bool result = await Portfolio.addToPortfolio(context, controller.text);
+                    bool result2 = await Portfolio.addToPortfolio(context, controller.text + "-USD");
                     print('adding to watchlist: $result');
-                    if (result) {
+                    print('adding to watchlist: $result2');
+                    if (result || result2) {
                       print('adding to watchlist yes');
                       WatchlistPageState.stateReference!.updateState();
                       Navigator.of(context).pop();

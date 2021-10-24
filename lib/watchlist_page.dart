@@ -54,7 +54,7 @@ class WatchlistPageState extends State<WatchlistPage> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                      "Search 50 cryptos",
+                      "Search watchlist",
                       style: TextStyle(
                         color: AppColors.lightGray,
                         fontSize: screenWidth / 25,
@@ -66,7 +66,7 @@ class WatchlistPageState extends State<WatchlistPage> {
           ),
           SizedBox(height: screenHeight / 30),
           Text(
-            'Your Crypto Watchlist',
+            'Your Watchlist',
             style: TextStyle(
               color: AppColors.red,
               fontSize: screenWidth / 25,

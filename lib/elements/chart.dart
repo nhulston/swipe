@@ -3,7 +3,6 @@ import 'package:candlesticks/candlesticks.dart';
 import 'package:candlesticks/src/theme/color_palette.dart';
 import 'package:candlesticks/src/widgets/candle_stick_widget.dart';
 import 'package:candlesticks/src/widgets/time_row.dart';
-import 'package:candlesticks/src/widgets/volume_widget.dart';
 import 'package:candlesticks/src/widgets/dash_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -134,8 +133,12 @@ class Chart extends StatelessWidget {
           builder: (context, high, _) {
             return TweenAnimationBuilder(
               tween: Tween(begin: low, end: low),
-              duration: Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 200),
               builder: (context, low, _) {
+                int i = min(
+                  max((constraints.maxWidth - 50 - hoverX) ~/ candleWidth + index, 0),
+                  candles.length - 2
+                );
                 return Container(
                   color: Colors.black,
                   child: Stack(
@@ -145,14 +148,7 @@ class Chart extends StatelessWidget {
                         candles: candles,
                         scrollController: scrollController,
                         candleWidth: candleWidth,
-                        indicatorTime: candles[min(
-                            max(
-                                (constraints.maxWidth - 50 - hoverX) ~/
-                                    candleWidth +
-                                    index,
-                                0),
-                            candles.length - 1)]
-                            .date,
+                        indicatorTime: candles[i].date,
                       ),
                       Column(
                         children: [
