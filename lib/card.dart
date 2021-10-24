@@ -20,13 +20,18 @@ class _AssetCardState extends State<AssetCard> {
   Color fcolor = Colors.grey;
   bool isActive = false;
   int activeIndex = 0;
+  List<double> xValues = [];
   List<DataPoint> dataPoints = [];
 
   getDataPoints() {
     for (int i = 0; i < widget.asset.priceData.close!.length; i++) {
-      dataPoints.add(DataPoint(
-          value: widget.asset.priceData.close![i].toDouble(),
-          xAxis: widget.asset.priceData.timestamp![i]));
+      double price = widget.asset.priceData.close![i] == null ? 0.0 : widget.asset.priceData.close![i].toDouble();
+      double timestamp = widget.asset.priceData.timestamp![i].toDouble();
+      if (price != null && price > 0) {
+        print('${widget.asset.name}, ${widget.asset.data.closePrice}, $timestamp, $price');
+        xValues.add(i.toDouble());
+        dataPoints.add(DataPoint(value: price, xAxis: timestamp));
+      }
     }
     setState(() {
       dataPoints = dataPoints;
@@ -116,11 +121,10 @@ class _AssetCardState extends State<AssetCard> {
                         ),
                       ),
                       Text(
-                        (widget.asset.data.closePrice -
-                                    widget.asset.data.openPrice) >
-                                0
-                            ? '+${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
-                            : '${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}',
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
+                          '+${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
+                        : '${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
+                        ,
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
@@ -132,22 +136,9 @@ class _AssetCardState extends State<AssetCard> {
                   Row(
                     children: [
                       Text(
-                        (widget.asset.data.closePrice -
-                                    widget.asset.data.openPrice) >
-                                0
-                            ? "+" +
-                                (((widget.asset.data.closePrice -
-                                                widget.asset.data.openPrice) /
-                                            widget.asset.data.openPrice) *
-                                        100)
-                                    .toStringAsFixed(2) +
-                                " %"
-                            : (((widget.asset.data.closePrice -
-                                                widget.asset.data.openPrice) /
-                                            widget.asset.data.openPrice) *
-                                        100)
-                                    .toStringAsFixed(2) +
-                                " %",
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
+                          "+" + (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %"
+                          : (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -155,11 +146,10 @@ class _AssetCardState extends State<AssetCard> {
                         ),
                       ),
                       Icon(
-                        (widget.asset.data.closePrice -
-                                    widget.asset.data.openPrice) >
-                                0
-                            ? Icons.arrow_upward
-                            : Icons.arrow_downward,
+                        (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
+                            Icons.arrow_upward
+                          :
+                            Icons.arrow_downward,
                         color: Colors.white,
                       ),
                     ],
@@ -173,23 +163,15 @@ class _AssetCardState extends State<AssetCard> {
                   child: BezierChart(
                     bezierChartScale: BezierChartScale.CUSTOM,
                     selectedValue: 1,
-                    xAxisCustomValues: [1, 5, 10, 15, 20, 25, 30],
-                    series: const [
+                    xAxisCustomValues: xValues,
+                    series: [
                       BezierLine(
                         label: "june",
                         lineColor: Colors.orange,
                         dataPointStrokeColor: Colors.orange,
                         dataPointFillColor: Colors.orange,
                         lineStrokeWidth: 3,
-                        data: const [
-                          DataPoint<double>(value: 100, xAxis: 1),
-                          DataPoint<double>(value: 130, xAxis: 5),
-                          DataPoint<double>(value: 300, xAxis: 10),
-                          DataPoint<double>(value: 150, xAxis: 15),
-                          DataPoint<double>(value: 75, xAxis: 20),
-                          DataPoint<double>(value: 100, xAxis: 25),
-                          DataPoint<double>(value: 250, xAxis: 30),
-                        ],
+                        data: dataPoints,
                       ),
                     ],
                     config: BezierChartConfig(
