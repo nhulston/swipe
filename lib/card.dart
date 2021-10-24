@@ -87,14 +87,11 @@ class _AssetCardState extends State<AssetCard> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [Color(0xFF000000), Color(0xFF000000)]
-          )
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
-        child:SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(
               left: 15,
@@ -106,13 +103,13 @@ class _AssetCardState extends State<AssetCard> {
               children: [
                 Text(
                   widget.asset.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ), //Company name
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 // ignore: prefer_const_constructors
@@ -132,7 +129,7 @@ class _AssetCardState extends State<AssetCard> {
                       children: [
                         Text(
                           '\$${widget.asset.data.closePrice.toStringAsFixed(2)}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 40,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -141,9 +138,9 @@ class _AssetCardState extends State<AssetCard> {
                         Text(
                           (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
                           '+${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
-                              : '${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
+                              : (widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)
                           ,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
@@ -157,7 +154,7 @@ class _AssetCardState extends State<AssetCard> {
                           (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
                           "+" + (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %"
                               : (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
@@ -175,7 +172,7 @@ class _AssetCardState extends State<AssetCard> {
                   ],
                 ),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                       height: MediaQuery.of(context).size.height / 2.5,
                       width: MediaQuery.of(context).size.width,
                       child: CandlesticksGraph(
@@ -193,7 +190,10 @@ class _AssetCardState extends State<AssetCard> {
                   ),
                 ),
 
-                SizedBox(
+                const SizedBox(
+                  height: 20,
+                ),
+                const SizedBox(
                   height: 20,
                 ),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -207,7 +207,7 @@ class _AssetCardState extends State<AssetCard> {
                       child: displayValues("Open",
                           widget.asset.data.highPrice.toStringAsFixed(2))), //High
                 ]), //Open & Close
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Expanded(
                       flex: 1,
@@ -221,7 +221,7 @@ class _AssetCardState extends State<AssetCard> {
                           widget.asset.data.yearHighPrice
                               .toStringAsFixed(2))), //52 Wk High
                 ]), //Low & 52 Wk High
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Expanded(
                       flex: 1,
