@@ -5,11 +5,12 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  Future<List<NewsArticle>> getArticle() async {
+  static Future<List<NewsArticle>> getArticle(String companyName) async {
     String endPointUrl =
-        "https://newsapi.org/v2/top-headlines?country=us&apiKey=61c4a69dd3c34d9aaf4737ff5c309a7f";
-
+        "https://newsapi.org/v2/everything?apiKey=61c4a69dd3c34d9aaf4737ff5c309a7f&q=${companyName.split(' ')[0]}";
+    print(endPointUrl);
     Response response = await get(Uri.parse(endPointUrl));
+    print(response.body);
 
     if (response.statusCode == 200) {
       final result = jsonDecode(response.body);

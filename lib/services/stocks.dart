@@ -2,8 +2,11 @@ import 'dart:developer';
 import 'dart:math';
 
 import 'package:swipe/models/asset_data.dart';
+import 'package:swipe/models/news_data.dart';
 import 'package:swipe/models/stock.dart';
 import 'package:swipe/models/stock_data.dart';
+import 'package:swipe/services/api_service.dart';
+import 'package:swipe/services/article_model.dart';
 import 'package:swipe/utils/randomizer.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:yahoofin/yahoofin.dart';
@@ -26,8 +29,9 @@ class StockServices {
     ChartQuotes? quotes = await getChartData(symbol, StockRange.oneDay);
     AssetData assetData = await fetchAssetData(symbol);
     String name = await fetchAssetName(symbol);
+    NewsData news = NewsData(await ApiService.getArticle(name));
 
-    return Stock(symbol, name, assetData, quotes!);
+    return Stock(symbol, name, assetData, quotes!, news);
   }
 
   static Future<String> fetchAssetName(String symbol) async {

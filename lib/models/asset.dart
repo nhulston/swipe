@@ -1,3 +1,4 @@
+import 'package:swipe/models/news_data.dart';
 import 'package:swipe/models/price_data.dart';
 import 'package:yahoofin/yahoofin.dart';
 
@@ -8,6 +9,7 @@ abstract class Asset {
   String name;
   AssetData data;
   ChartQuotes priceData;
+  NewsData newsData;
 
-  Asset(this.symbol, this.name, this.data, this.priceData);
+  Asset(this.symbol, this.name, this.data, this.priceData, this.newsData);
 }

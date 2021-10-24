@@ -365,7 +365,10 @@ class AssetCardState extends State<AssetCard> {
                   ),
                 ),
                 SizedBox(height: 20),
-                ListTile(),
+                Text(
+                    widget.asset.newsData.articles.length >= 1 ? widget.asset.newsData.articles[0].title : '',
+                    style: TextStyle(color: Colors.white),
+                ),
               ],
             ),
           ),
