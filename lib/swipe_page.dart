@@ -51,24 +51,20 @@ class SwipePageState extends State<SwipePage> {
           // widget.cards.removeAt(0);
         });
         String ticker = widget.cards[x].asset.symbol.toUpperCase();
-        int index = ticker.indexOf("-USD");
-        if (index == -1) {
-          Portfolio.addToPortfolio(context, ticker);
-        } else {
-          Portfolio.addToPortfolio(context, ticker.substring(0, index));
-        }
+        Portfolio.addToPortfolio(context, ticker);
       },
       onBack: (int x, SwipeInfo info) {
+        if (info.direction == SwipeDirection.left) return;
         MyHomePageState.currentlyViewedIndex = info.cardIndex;
-        ChartCandlesData.candleData.remove([widget.cards[info.cardIndex].asset.symbol]!);
         if (MyHomePageState.currentlyViewedIndex! + 3 > MyHomePageState.stocks.length) {
+          print("get more stocks");
           MyHomePageState.getStocks();
         }
         setState(() {
           // widget.cards.removeAt(0);
         });
-        log('$x');
-        log('${info.cardIndex}');
+        String ticker = widget.cards[x].asset.symbol.toUpperCase();
+        Portfolio.addToPortfolio(context, ticker);
       },
     );
     // print("rebuilding: ${build.cards}");
