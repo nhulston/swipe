@@ -16,7 +16,7 @@ import 'package:swipe/services/api_service.dart';
 import 'package:swipe/services/article_details_page.dart';
 import 'package:swipe/services/article_model.dart';
 import 'package:swipe/services/customListFile.dart';
-6
+
 import 'elements/candlesticks.dart';
 import 'models/asset.dart';
 
