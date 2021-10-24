@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:swipe/card.dart';
 import 'package:swipe/services/stocks.dart';
+import 'package:swipe/style/app_colors.dart';
 import 'package:swipe/style/radiant_gradient_mask.dart';
-import 'style/portfolio.dart';
-import 'cards.dart';
+import 'package:swipe/watchlist_page.dart';
+//import 'style/portfolio.dart';
+import 'swipe_page.dart';
 import 'package:swipe/models/stock.dart';
 import 'my_app_bar.dart';
 import 'my_nav_bar.dart';
@@ -74,9 +76,18 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: MyNavBarState.bottomNavIndex == 0
             ? stocks.isEmpty ?
-              Text("Loading...")
-              : Cards(cards: stocks,)
-            : const Portfolio(),
+              const Text("Loading...")
+              : SwipePage(cards: stocks,)
+            : const WatchlistPage(), //const Portfolio(),
+      ),
+      floatingActionButton: MyNavBarState.bottomNavIndex == 0 ? null : FloatingActionButton(
+        backgroundColor: AppColors.red,
+        onPressed: () {
+
+        },
+        child: const Icon(
+          Icons.add,
+        ),
       ),
     );
   }
