@@ -1,12 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_const
-
 import 'package:candlesticks/candlesticks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:bezier_chart/bezier_chart.dart';
-import 'package:swipe/graph_card.dart';
 import 'package:swipe/services/stocks.dart';
-import 'package:swipe/style/app_colors.dart';
 import 'package:yahoofin/yahoofin.dart';
 
 import 'elements/candlesticks.dart';
@@ -14,7 +9,7 @@ import 'models/asset.dart';
 
 class AssetCard extends StatefulWidget {
   final Asset asset;
-  AssetCard({Key? key, required this.asset}) : super(key: key);
+  const AssetCard({Key? key, required this.asset}) : super(key: key);
 
   @override
   _AssetCardState createState() => _AssetCardState();
@@ -25,21 +20,18 @@ class _AssetCardState extends State<AssetCard> {
   Color fcolor = Colors.grey;
   bool isActive = false;
   int activeIndex = 0;
-  List<Candle> candles = [
-  ];
+  List<Candle> candles = [];
 
   getDataPoints() async {
     for (int i = widget.asset.priceData.close!.length - 1; i >= 0 ; i--) {
-      double open = widget.asset.priceData.open![i] == null ? 0.0 : widget.asset.priceData.open![i].toDouble();
-      double high = widget.asset.priceData.high![i] == null ? 0.0 : widget.asset.priceData.high![i].toDouble();
-      double low = widget.asset.priceData.low![i] == null ? 0.0 : widget.asset.priceData.low![i].toDouble();
-      double close = widget.asset.priceData.close![i] == null ? 0.0 : widget.asset.priceData.close![i].toDouble();
+      double open = widget.asset.priceData.open![i].toDouble();
+      double high = widget.asset.priceData.high![i].toDouble();
+      double low = widget.asset.priceData.low![i].toDouble();
+      double close = widget.asset.priceData.close![i].toDouble();
       DateTime timestamp;
-      if (widget.asset.priceData.timestamp![i] != null) {
-        timestamp = DateTime.fromMillisecondsSinceEpoch(widget.asset.priceData.timestamp![i].toInt() * 1000);
-        if (close != null && close > 0) {
-          candles.add(Candle(date: timestamp, open: open, high: high, low: low, close: close, volume: open));
-        }
+      timestamp = DateTime.fromMillisecondsSinceEpoch(widget.asset.priceData.timestamp![i].toInt() * 1000);
+      if (close > 0) {
+        candles.add(Candle(date: timestamp, open: open, high: high, low: low, close: close, volume: open));
       }
 
     }
@@ -60,14 +52,11 @@ class _AssetCardState extends State<AssetCard> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [Color(0xFF000000), Color(0xFF000000)]
-          )
+        decoration: const BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
-        child:SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(
               left: 15,
@@ -79,13 +68,13 @@ class _AssetCardState extends State<AssetCard> {
               children: [
                 Text(
                   widget.asset.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
                 ), //Company name
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 // ignore: prefer_const_constructors
@@ -105,7 +94,7 @@ class _AssetCardState extends State<AssetCard> {
                       children: [
                         Text(
                           '\$${widget.asset.data.closePrice.toStringAsFixed(2)}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 40,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -114,9 +103,9 @@ class _AssetCardState extends State<AssetCard> {
                         Text(
                           (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
                           '+${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
-                              : '${(widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)}'
+                              : (widget.asset.data.closePrice - widget.asset.data.openPrice).toStringAsFixed(2)
                           ,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
@@ -130,7 +119,7 @@ class _AssetCardState extends State<AssetCard> {
                           (widget.asset.data.closePrice - widget.asset.data.openPrice) > 0 ?
                           "+" + (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %"
                               : (((widget.asset.data.closePrice - widget.asset.data.openPrice) / widget.asset.data.openPrice) * 100).toStringAsFixed(2) + " %",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
@@ -148,7 +137,7 @@ class _AssetCardState extends State<AssetCard> {
                   ],
                 ),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                       height: MediaQuery.of(context).size.height / 2.5,
                       width: MediaQuery.of(context).size.width,
                       child: CandlesticksGraph(
@@ -166,47 +155,48 @@ class _AssetCardState extends State<AssetCard> {
                   ),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Expanded(
-                      flex: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Open",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey,
-                            ),
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Open",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey,
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                "149.64",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.grey,
-                                ),
+                        ),
+                        Row(
+                          children: const [
+                            Text(
+                              "149.64",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.grey,
                               ),
-                            ],
-                          )
-                        ],
-                      )), //Open
-                  SizedBox(width: 10),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  ),
+                  const SizedBox(width: 10),
                   Expanded(
                       flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "High",
                             style: TextStyle(
                               fontSize: 15,
@@ -218,7 +208,7 @@ class _AssetCardState extends State<AssetCard> {
                             children: [
                               Text(
                                 widget.asset.data.highPrice.toStringAsFixed(2),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.grey,
@@ -229,14 +219,14 @@ class _AssetCardState extends State<AssetCard> {
                         ],
                       )), //High
                 ]), //Open & Close
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Expanded(
                       flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Low",
                             style: TextStyle(
                               fontSize: 15,
@@ -248,7 +238,7 @@ class _AssetCardState extends State<AssetCard> {
                             children: [
                               Text(
                                 widget.asset.data.lowPrice.toStringAsFixed(2),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.grey,
@@ -258,13 +248,13 @@ class _AssetCardState extends State<AssetCard> {
                           )
                         ],
                       )), //Low
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                       flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "52 Wk High",
                             style: TextStyle(
                               fontSize: 15,
@@ -276,7 +266,7 @@ class _AssetCardState extends State<AssetCard> {
                             children: [
                               Text(
                                 widget.asset.data.yearHighPrice.toStringAsFixed(2),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.grey,
@@ -287,14 +277,14 @@ class _AssetCardState extends State<AssetCard> {
                         ],
                       )), //52 Wk High
                 ]), //Low & 52 Wk High
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Expanded(
                       flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "52 Wk Low",
                             style: TextStyle(
                               fontSize: 15,
@@ -306,7 +296,7 @@ class _AssetCardState extends State<AssetCard> {
                             children: [
                               Text(
                                 widget.asset.data.yearLowPrice.toStringAsFixed(2),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.grey,
@@ -316,13 +306,13 @@ class _AssetCardState extends State<AssetCard> {
                           )
                         ],
                       )), //52 Wk Low
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                       flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Volume",
                             style: TextStyle(
                               fontSize: 15,
@@ -334,7 +324,7 @@ class _AssetCardState extends State<AssetCard> {
                             children: [
                               Text(
                                 widget.asset.data.volume.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.grey,
@@ -345,14 +335,14 @@ class _AssetCardState extends State<AssetCard> {
                         ],
                       )), //Volume
                 ]), //52k low & Volume
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Expanded(
                       flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Avg Vol",
                             style: TextStyle(
                               fontSize: 15,
@@ -361,7 +351,7 @@ class _AssetCardState extends State<AssetCard> {
                             ),
                           ),
                           Row(
-                            children: [
+                            children: const [
                               Text(
                                 "69.46M",
                                 style: TextStyle(
@@ -374,13 +364,13 @@ class _AssetCardState extends State<AssetCard> {
                           )
                         ],
                       )),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                       flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Mkt Cap",
                             style: TextStyle(
                               fontSize: 15,
@@ -389,7 +379,7 @@ class _AssetCardState extends State<AssetCard> {
                             ),
                           ),
                           Row(
-                            children: [
+                            children: const [
                               Text(
                                 "2.46T",
                                 style: TextStyle(
@@ -403,14 +393,14 @@ class _AssetCardState extends State<AssetCard> {
                         ],
                       )),
                 ]), //Avg Vol & Mkt Cap
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Expanded(
                       flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "P/E Ratio",
                             style: TextStyle(
                               fontSize: 15,
@@ -419,7 +409,7 @@ class _AssetCardState extends State<AssetCard> {
                             ),
                           ),
                           Row(
-                            children: [
+                            children: const [
                               Text(
                                 "29.12",
                                 style: TextStyle(
@@ -432,13 +422,13 @@ class _AssetCardState extends State<AssetCard> {
                           )
                         ],
                       )),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                       flex: 1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             "Div/Yield",
                             style: TextStyle(
                               fontSize: 15,
@@ -447,7 +437,7 @@ class _AssetCardState extends State<AssetCard> {
                             ),
                           ),
                           Row(
-                            children: [
+                            children: const [
                               Text(
                                 "0.57",
                                 style: TextStyle(
@@ -461,8 +451,8 @@ class _AssetCardState extends State<AssetCard> {
                         ],
                       )),
                 ]),
-                SizedBox(height: 20), //P/E ratio & Div/Yield
-                Text(
+                const SizedBox(height: 20), //P/E ratio & Div/Yield
+                const Text(
                   "News",
                   style: TextStyle(
                     fontSize: 25,
