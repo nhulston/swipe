@@ -12,7 +12,7 @@ typedef EndCallback = Function();
 /// We forked this from this package: https://pub.dev/packages/tcard
 class TinderSwipe extends StatefulWidget {
   final Size size;
-  final List<Widget> cards;
+  List<Widget> cards;
   final Function? onForward;
   final Function? onBack;
   final EndCallback? onEnd;
@@ -25,7 +25,7 @@ class TinderSwipe extends StatefulWidget {
   /// How long does it have to wait until the next slide is sliable? less is quicker. 100 is fast enough. 500 is a bit slow.
   final int delaySlideFor;
 
-  const TinderSwipe({
+  TinderSwipe({
     required this.cards,
     this.controller,
     this.onForward,
@@ -42,7 +42,7 @@ class TinderSwipe extends StatefulWidget {
 }
 
 class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin {
-  final List<Widget> _cards = [];
+  List<Widget> cards = [];
   // Card swipe directions
   final List<SwipeInfo> _swipInfoList = [];
   List<SwipeInfo> get swipInfoList => _swipInfoList;
@@ -58,7 +58,7 @@ class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin 
   late AnimationController _reboundController;
   Widget _frontCard(BoxConstraints constraints) {
     Widget child =
-    _frontCardIndex < _cards.length ? _cards[_frontCardIndex] : Container();
+    _frontCardIndex < widget.cards.length ? widget.cards[_frontCardIndex] : Container();
     bool forward = _cardChangeController.status == AnimationStatus.forward;
     bool reverse = _cardReverseController.status == AnimationStatus.forward;
 
@@ -98,8 +98,8 @@ class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin 
 
   // 中间的卡片
   Widget _middleCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length - 1
-        ? _cards[_frontCardIndex + 1]
+    Widget child = _frontCardIndex < widget.cards.length - 1
+        ? widget.cards[_frontCardIndex + 1]
         : Container();
     bool forward = _cardChangeController.status == AnimationStatus.forward;
     bool reverse = _cardReverseController.status == AnimationStatus.forward;
@@ -143,8 +143,8 @@ class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin 
 
   // 后面的卡片
   Widget _backCard(BoxConstraints constraints) {
-    Widget child = _frontCardIndex < _cards.length - 2
-        ? _cards[_frontCardIndex + 2]
+    Widget child = _frontCardIndex < widget.cards.length - 2
+        ? widget.cards[_frontCardIndex + 2]
         : Container();
     bool forward = _cardChangeController.status == AnimationStatus.forward;
     bool reverse = _cardReverseController.status == AnimationStatus.forward;
@@ -215,7 +215,7 @@ class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin 
       return;
     }
 
-    if (_frontCardIndex >= _cards.length) {
+    if (_frontCardIndex >= widget.cards.length) {
       return;
     }
 
@@ -253,7 +253,7 @@ class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin 
 
     if (widget.onEnd != null &&
         widget.onEnd is Function &&
-        _frontCardIndex >= _cards.length) {
+        _frontCardIndex >= widget.cards.length) {
       widget.onEnd!();
     }
   }
@@ -279,11 +279,11 @@ class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin 
   }
 
   void reset({List<Widget>? cards}) {
-    _cards.clear();
+    widget.cards.clear();
     if (cards != null) {
-      _cards.addAll(cards);
+      widget.cards.addAll(cards);
     } else {
-      _cards.addAll(widget.cards);
+      widget.cards.addAll(widget.cards);
     }
     _swipInfoList.clear();
     _frontCardIndex = 0;
@@ -330,7 +330,7 @@ class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin 
   void initState() {
     super.initState();
 
-    _cards.addAll(widget.cards);
+    // widget.cards.addAll(widget.cards);
 
     if (widget.controller != null && widget.controller is TCardController) {
       widget.controller!.bindState(this);
@@ -383,6 +383,7 @@ class TinderSwipeState extends State<TinderSwipe> with TickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) {
+    print('building tinder cards: $widget.cards');
     return SizedBox.fromSize(
       size: widget.size,
       child: LayoutBuilder(

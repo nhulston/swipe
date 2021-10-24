@@ -140,14 +140,47 @@ class _AssetCardState extends State<AssetCard> {
                       child: CandlesticksGraph(
                         candles: candles,
                         onIntervalChange: (String val) async {
-                          // TODO: use val to get interval
-                          ChartQuotes? quotes = await StockServices.getChartData(widget.asset.symbol, StockRange.fiveDay);
+                          StockRange interval;
+                          switch (val) {
+                            case '1D':
+                              interval = StockRange.oneDay;
+                              break;
+                            case '5D':
+                              interval = StockRange.fiveDay;
+                              break;
+                            case '1M':
+                              interval = StockRange.oneMonth;
+                              break;
+                            case '3M':
+                              interval = StockRange.threeMonth;
+                              break;
+                            case '1Y':
+                              interval = StockRange.oneYear;
+                              break;
+                            case '5Y':
+                              interval = StockRange.fiveYear;
+                              break;
+                            default:
+                              interval = StockRange.maxRange;
+                          }
+
+                          ChartQuotes? quotes = await StockServices.getChartData(widget.asset.symbol, interval);
                           if (quotes != null) {
                             setState(() {
+                              print(quotes.close);
                               widget.asset.priceData = quotes;
                             });
                           }
-                        }, interval: '1m',
+                        },
+                        interval: '1D',
+                        intervals: const [
+                          '1D',
+                          '5D',
+                          '1M',
+                          '3M',
+                          '1Y',
+                          '5Y'
+                        ],
                       )
                   ),
                 ),

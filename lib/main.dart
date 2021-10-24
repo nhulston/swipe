@@ -44,8 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
       AssetCard card = AssetCard(asset: s);
       stocks.add(card);
       setState(() {
-        stocks = stocks;
       });
+      if (SwipePageState.stateRef != null) {
+        SwipePageState.stateRef!.updateState();
+      }
     }
   }
 
@@ -55,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       return await StockServices.fetchStock(symbol);
     } catch (e) {
-      return getStocks();
+      return getStock();
     }
 }
 
