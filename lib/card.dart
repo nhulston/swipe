@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:swipe/graph_card.dart';
+import 'package:swipe/app_colors.dart';
 
 class MyCard extends StatefulWidget {
   const MyCard({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _MyCardState extends State<MyCard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.red,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(
