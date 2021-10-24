@@ -32,16 +32,17 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   List<AssetCard> stocks = [];
   Function? watchlistCallback;
+  static int? currentlyViewedIndex;
   getStocks() async {
     for (int i = 0; i < 10; i++) {
       Stock s = await getStock();
-      AssetCard card = AssetCard(asset: s);
+      AssetCard card = AssetCard(asset: s, index: i,);
       stocks.add(card);
       setState(() {
       });
@@ -65,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     getStocks();
+    currentlyViewedIndex = 0;
   }
 
   @override

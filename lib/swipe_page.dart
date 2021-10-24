@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe/elements/tinder_swipe/tinder_swipe.dart';
 import 'package:swipe/card.dart';
+import 'package:swipe/main.dart';
 
+import 'chart_candles_data.dart';
 import 'elements/tinder_swipe/swipe_info.dart';
 
 class SwipePage extends StatefulWidget {
@@ -40,6 +42,7 @@ class SwipePageState extends State<SwipePage> {
       size: Size(screenWidth, screenHeight),
       cards: widget.cards,
       onForward: (int x, SwipeInfo info) {
+        MyHomePageState.currentlyViewedIndex = info.cardIndex;
         setState(() {
           // widget.cards.removeAt(0);
         });
@@ -47,6 +50,8 @@ class SwipePageState extends State<SwipePage> {
         log('${info.cardIndex}');
       },
       onBack: (int x, SwipeInfo info) {
+        MyHomePageState.currentlyViewedIndex = info.cardIndex;
+        ChartCandlesData.candleData.remove([widget.cards[info.cardIndex].asset.symbol]!);
         setState(() {
           // widget.cards.removeAt(0);
         });
