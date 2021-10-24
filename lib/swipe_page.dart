@@ -18,15 +18,15 @@ List<Color> colors = [
   Colors.teal,
 ];
 
-class Cards extends StatefulWidget {
-  List<AssetCard> cards;
-  Cards({Key? key, required this.cards}) : super(key: key);
+class SwipePage extends StatefulWidget {
+  final List<AssetCard> cards;
+  const SwipePage({Key? key, required this.cards}) : super(key: key);
 
   @override
-  _CardsState createState() => _CardsState();
+  _SwipePageState createState() => _SwipePageState();
 }
 
-class _CardsState extends State<Cards> {
+class _SwipePageState extends State<SwipePage> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
